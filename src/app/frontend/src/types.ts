@@ -184,11 +184,24 @@ export interface PerfModeCost {
   mtbf_pumping_hrs: number;
 }
 
-export interface PerfLever {
+// Value the app delivers, one row per scenario. Only failures caught early count.
+export interface PerfAppValue {
   scenario: "conservative" | "target";
-  lever: string;
-  annual_usd: number;
-  proven_in: string; // "" on the Program total row
+  catch_rate: number;
+  precision: number;
+  failures_caught: number;
+  failures_total: number;
+  baseline_failure_cost_usd: number;
+  gross_avoided_usd: number;
+  false_alarm_cost_usd: number;
+  platform_cost_usd: number;
+  net_ebitda_usd: number;
+  failure_cost_reduction_pct: number; // already in percent units (21.9 = 21.9%)
+  pct_fleet_ebitda: number; // already in percent units (0.64 = 0.64%)
+  spread_hrs_recovered: number;
+  return_on_platform_x: number;
+  payback_months: number;
+  expansion_upside_usd: number;
 }
 
 export interface PerfModelStats {
@@ -234,7 +247,7 @@ export interface Performance {
   as_of: string;
   weekly: PerfWeek[];
   by_mode_cost: PerfModeCost[];
-  levers: PerfLever[];
+  app_value: PerfAppValue[];
   model: { lightgbm_calibrated: PerfModelStats; calendar_baseline: PerfModelStats };
   model_recall_by_mode: PerfModeRecall[];
   fleet: PerfFleet[];

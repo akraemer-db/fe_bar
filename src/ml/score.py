@@ -114,14 +114,25 @@ va = pd.read_csv("../../value_model/value_assumptions.csv")
 mc = pd.read_csv("../../value_model/mode_costs.csv")
 spark.createDataFrame(va.astype({"value": float})).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{FQ}.value_assumptions")
 spark.createDataFrame(mc.fillna({"event_mix": 0})).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{FQ}.mode_costs")
-levers = []
+# App-delivered value only (failures caught early). Fluid end life and consumables are expansion upside, not claimed.
+fa_cost = vm.v(vm.ASSUMPTIONS, "false_alarm_cost")
+platform = vm.v(vm.ASSUMPTIONS, "platform_run_rate")
+ebitda_total = vm.v(vm.ASSUMPTIONS, "fleets") * vm.v(vm.ASSUMPTIONS, "ebitda_per_fleet")
+app_value = []
 for scen in ("conservative", "target"):
     r = vm.run(scen)
-    for lever, key, proven in [("Failures caught early (ML)", "lever1_ml", "POC backtest"),
-                               ("Fluid end life +10%", "lever2_fe_life", "Pilot"),
-                               ("Condition-based consumables -10%", "lever3_consumables", "Pilot")]:
-        levers.append({"scenario": scen, "lever": lever, "annual_usd": float(r[key]), "proven_in": proven})
-    levers.append({"scenario": scen, "lever": "Program total", "annual_usd": float(r["program_total"]), "proven_in": ""})
-spark.createDataFrame(pd.DataFrame(levers)).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{FQ}.value_model_levers")
+    gross = r["events_caught"] * r["avg_value_per_catch"]
+    app_value.append({
+        "scenario": scen, "catch_rate": r["catch_rate"], "precision": r["precision"],
+        "failures_caught": round(r["events_caught"]), "failures_total": round(r["unplanned_events"]),
+        "baseline_failure_cost_usd": r["baseline_failure_cost"], "gross_avoided_usd": gross,
+        "false_alarm_cost_usd": r["false_alarms_per_yr"] * fa_cost, "platform_cost_usd": platform,
+        "net_ebitda_usd": r["lever1_ml"], "failure_cost_reduction_pct": 100 * gross / r["baseline_failure_cost"],
+        "pct_fleet_ebitda": 100 * r["lever1_ml"] / ebitda_total, "spread_hrs_recovered": r["spread_hrs_recovered"],
+        "return_on_platform_x": (r["lever1_ml"] + platform) / platform, "payback_months": r["payback_months_lever1"],
+        "expansion_upside_usd": r["lever2_fe_life"] + r["lever3_consumables"]})
+spark.createDataFrame(pd.DataFrame(app_value)).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{FQ}.value_model_app")
+spark.sql(f"DROP TABLE IF EXISTS {FQ}.value_model_levers")
+spark.sql(f"COMMENT ON TABLE {FQ}.value_model_app IS 'Value the app delivers per year (failures caught early): gross avoided - false alarms - platform = net EBITDA. Modeled; expansion_upside_usd is not claimed.'")
 display(spark.table(f"{FQ}.mode_costs"))
-display(spark.table(f"{FQ}.value_model_levers"))
+display(spark.table(f"{FQ}.value_model_app"))

@@ -1535,3 +1535,20 @@ tr:focus-visible {
   width: 40%;
   white-space: normal;
 }
+
+.perf-wf-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 20px;
+}
+
+.perf-returns {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 600;
+}

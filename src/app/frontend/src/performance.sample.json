@@ -346,54 +346,42 @@
             "mtbf_pumping_hrs": 18927.0
         }
     ],
-    "levers": [
+    "app_value": [
         {
             "scenario": "conservative",
-            "lever": "Failures caught early (ML)",
-            "annual_usd": 1730641.4794921875,
-            "proven_in": "POC backtest"
-        },
-        {
-            "scenario": "conservative",
-            "lever": "Fluid end life +10%",
-            "annual_usd": 5539772.727272728,
-            "proven_in": "Pilot"
-        },
-        {
-            "scenario": "conservative",
-            "lever": "Condition-based consumables -10%",
-            "annual_usd": 1800000.0,
-            "proven_in": "Pilot"
-        },
-        {
-            "scenario": "conservative",
-            "lever": "Program total",
-            "annual_usd": 9070414.206764916,
-            "proven_in": ""
+            "catch_rate": 0.25,
+            "precision": 0.5,
+            "failures_caught": 70,
+            "failures_total": 279,
+            "baseline_failure_cost_usd": 11897878.41796875,
+            "gross_avoided_usd": 2610016.4794921875,
+            "false_alarm_cost_usd": 279375.0,
+            "platform_cost_usd": 600000,
+            "net_ebitda_usd": 1730641.4794921875,
+            "failure_cost_reduction_pct": 21.936822581330254,
+            "pct_fleet_ebitda": 0.6409783257378472,
+            "spread_hrs_recovered": 90.615234375,
+            "return_on_platform_x": 3.8844024658203127,
+            "payback_months": 5.200383849947258,
+            "expansion_upside_usd": 7339772.727272728
         },
         {
             "scenario": "target",
-            "lever": "Failures caught early (ML)",
-            "annual_usd": 3582354.387555803,
-            "proven_in": "POC backtest"
-        },
-        {
-            "scenario": "target",
-            "lever": "Fluid end life +10%",
-            "annual_usd": 5539772.727272728,
-            "proven_in": "Pilot"
-        },
-        {
-            "scenario": "target",
-            "lever": "Condition-based consumables -10%",
-            "annual_usd": 1800000.0,
-            "proven_in": "Pilot"
-        },
-        {
-            "scenario": "target",
-            "lever": "Program total",
-            "annual_usd": 10922127.11482853,
-            "proven_in": ""
+            "catch_rate": 0.5,
+            "precision": 0.35,
+            "failures_caught": 140,
+            "failures_total": 279,
+            "baseline_failure_cost_usd": 11897878.41796875,
+            "gross_avoided_usd": 5220032.958984375,
+            "false_alarm_cost_usd": 1037678.5714285716,
+            "platform_cost_usd": 600000,
+            "net_ebitda_usd": 3582354.387555803,
+            "failure_cost_reduction_pct": 43.87364516266051,
+            "pct_fleet_ebitda": 1.326797921316964,
+            "spread_hrs_recovered": 181.23046875,
+            "return_on_platform_x": 6.970590645926339,
+            "payback_months": 2.5123142565860412,
+            "expansion_upside_usd": 7339772.727272728
         }
     ],
     "model": {
@@ -625,14 +613,20 @@
         },
         {
             "day": "2026-10-26",
-            "work_orders": 1,
-            "expected_usd": 31650.0,
-            "cumulative_usd": 480950.0
+            "work_orders": 4,
+            "expected_usd": 172650.0,
+            "cumulative_usd": 621950.0
+        },
+        {
+            "day": "2026-10-27",
+            "work_orders": 6,
+            "expected_usd": 207100.0,
+            "cumulative_usd": 829050.0
         },
         {
             "day": "2026-10-28",
-            "work_orders": 14,
-            "expected_usd": 462850.0,
+            "work_orders": 5,
+            "expected_usd": 114750.0,
             "cumulative_usd": 943800.0
         }
     ],

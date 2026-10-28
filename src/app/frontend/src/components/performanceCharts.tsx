@@ -7,6 +7,7 @@ import {
   AreaChart,
   Bar,
   BarChart,
+  Cell,
   CartesianGrid,
   LabelList,
   Legend,
@@ -16,7 +17,7 @@ import {
   YAxis,
 } from "recharts";
 import { MODE_LABEL, STATUS_LABEL, fmtUsd, fmtUsdFull, parseLocal } from "../format";
-import type { PerfDay, PerfFleet, PerfLever, PerfModeCost, PerfModeRecall, PerfStatus, PerfWeek } from "../types";
+import type { PerfDay, PerfFleet, PerfModeCost, PerfModeRecall, PerfStatus, PerfWeek } from "../types";
 
 // Reference palette, light surface (see dataviz/references/palette.md).
 export const VIZ = {
@@ -79,78 +80,88 @@ const LEGEND_PROPS = {
 };
 
 // ---------------------------------------------------------------------------
-// Opportunity: value by lever, conservative vs target
+// Value: failure cost avoided -> added EBITDA, one waterfall per scenario.
+// Both waterfalls share one y-scale so the scenarios compare directly.
 // ---------------------------------------------------------------------------
-interface LeverRow {
-  name: string;
-  provenIn: string;
-  conservative: number;
-  target: number;
+export interface WaterfallInput {
+  label: string;
+  gross: number;
+  falseAlarm: number;
+  platform: number;
+  net: number;
 }
 
-function LeverTick(props: { x?: number; y?: number; payload?: { value: string }; proven: Record<string, string> }) {
-  const name = props.payload?.value ?? "";
-  const proven = props.proven[name];
+interface WfStep {
+  name: string;
+  base: number; // invisible spacer under the visible step
+  value: number; // visible step height
+  amount: number; // signed dollars for tooltip and label
+  total: boolean;
+  text: string;
+}
+
+function WaterfallTick(props: { x?: number; y?: number; payload?: { value: string } }) {
+  const words = (props.payload?.value ?? "").split(" ");
+  const mid = Math.ceil(words.length / 2);
+  const lines = [words.slice(0, mid).join(" "), words.slice(mid).join(" ")].filter((l) => l.length > 0);
   return (
     <g transform={`translate(${props.x ?? 0},${props.y ?? 0})`}>
-      <text x={-10} y={proven ? -2 : 4} textAnchor="end" fill={VIZ.ink} fontSize={14} fontWeight={600}>
-        {name}
-      </text>
-      {proven && (
-        <text x={-10} y={15} textAnchor="end" fill={VIZ.ink2} fontSize={12}>
-          Proven in: {proven}
+      {lines.map((l, i) => (
+        <text key={i} x={0} y={12 + i * 16} textAnchor="middle" fill={VIZ.ink} fontSize={13} fontWeight={600}>
+          {l}
         </text>
-      )}
+      ))}
     </g>
   );
 }
 
-export function LeverChart({ levers }: { levers: PerfLever[] }) {
-  const byName = new Map<string, LeverRow>();
-  for (const l of levers) {
-    if (l.lever === "Program total") continue;
-    const row = byName.get(l.lever) ?? { name: l.lever, provenIn: l.proven_in, conservative: 0, target: 0 };
-    if (l.scenario === "conservative") row.conservative = l.annual_usd;
-    else row.target = l.annual_usd;
-    byName.set(l.lever, row);
-  }
-  const rows = [...byName.values()].sort((a, b) => b.target - a.target);
-  const proven = Object.fromEntries(rows.map((r) => [r.name, r.provenIn]));
-  const max = Math.max(1, ...rows.flatMap((r) => [r.conservative, r.target]));
-
+export function WaterfallChart({ s, max }: { s: WaterfallInput; max: number }) {
+  const steps: WfStep[] = [
+    { name: "Failure cost avoided", base: 0, value: s.gross, amount: s.gross, total: true, text: fmtUsd(s.gross) },
+    {
+      name: "False-alarm inspections",
+      base: s.gross - s.falseAlarm,
+      value: s.falseAlarm,
+      amount: -s.falseAlarm,
+      total: false,
+      text: fmtUsd(-s.falseAlarm),
+    },
+    {
+      name: "Platform run rate",
+      base: s.net,
+      value: s.platform,
+      amount: -s.platform,
+      total: false,
+      text: fmtUsd(-s.platform),
+    },
+    { name: "Added EBITDA", base: 0, value: s.net, amount: s.net, total: true, text: fmtUsd(s.net) },
+  ];
   return (
-    <ResponsiveContainer width="100%" height={280}>
-      <BarChart data={rows} layout="vertical" margin={{ top: 36, right: 72, bottom: 4, left: 4 }} barGap={2} barCategoryGap="26%">
-        <CartesianGrid horizontal={false} stroke={VIZ.grid} />
-        <XAxis type="number" domain={[0, max * 1.18]} tickFormatter={fmtUsd} tick={TICK} axisLine={false} tickLine={false} />
-        <YAxis
-          type="category"
-          dataKey="name"
-          width={262}
-          tickLine={false}
-          axisLine={AXIS_LINE}
-          tick={(p) => <LeverTick x={p.x} y={p.y} payload={p.payload} proven={proven} />}
-        />
-        <Tooltip
-          cursor={{ fill: "rgba(11,11,11,0.04)" }}
-          content={tip<LeverRow>((r) => ({
-            title: r.name,
-            rows: [
-              { label: "Conservative", value: fmtUsdFull(r.conservative), color: VIZ.s1 },
-              { label: "Target", value: fmtUsdFull(r.target), color: VIZ.s2 },
-              { label: "Proven in", value: r.provenIn },
-            ],
-          }))}
-        />
-        <Legend {...LEGEND_PROPS} />
-        <Bar dataKey="conservative" name="Conservative" fill={VIZ.s1} radius={[0, 4, 4, 0]} maxBarSize={22}>
-          <LabelList dataKey="conservative" position="right" formatter={(v: number) => fmtUsd(v)} fill={VIZ.ink} fontSize={13} />
-        </Bar>
-        <Bar dataKey="target" name="Target" fill={VIZ.s2} radius={[0, 4, 4, 0]} maxBarSize={22}>
-          <LabelList dataKey="target" position="right" formatter={(v: number) => fmtUsd(v)} fill={VIZ.ink} fontSize={13} />
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+    <div className="perf-wf">
+      <div className="perf-mini-title">{s.label}</div>
+      <ResponsiveContainer width="100%" height={270}>
+        <BarChart data={steps} margin={{ top: 26, right: 8, bottom: 0, left: 4 }} barCategoryGap="24%">
+          <CartesianGrid vertical={false} stroke={VIZ.grid} />
+          <XAxis dataKey="name" interval={0} height={50} tick={<WaterfallTick />} tickLine={false} axisLine={AXIS_LINE} />
+          <YAxis domain={[0, max]} tickFormatter={fmtUsd} tick={{ ...TICK, fontSize: 12 }} tickLine={false} axisLine={false} width={56} />
+          <Tooltip
+            cursor={{ fill: "rgba(11,11,11,0.04)" }}
+            content={tip<WfStep>((r) => ({
+              title: `${s.label}: ${r.name}`,
+              rows: [{ label: "Amount", value: fmtUsdFull(r.amount), color: r.total ? VIZ.s1 : VIZ.s2 }],
+            }))}
+          />
+          {/* Invisible spacer keeps each visible step floating at its running total. */}
+          <Bar dataKey="base" stackId="wf" fill="none" isAnimationActive={false} legendType="none" />
+          <Bar dataKey="value" stackId="wf" maxBarSize={56} radius={[4, 4, 4, 4]} name="Amount">
+            {steps.map((st) => (
+              <Cell key={st.name} fill={st.total ? VIZ.s1 : VIZ.s2} />
+            ))}
+            <LabelList dataKey="text" position="top" fill={VIZ.ink} fontSize={13} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 

@@ -150,6 +150,9 @@
    },
    {
     "identifier": "production_forecasting_catalog.frac_pump_pdm.value_assumptions"
+   },
+   {
+    "identifier": "production_forecasting_catalog.frac_pump_pdm.value_model_app"
    }
   ]
  },
@@ -158,7 +161,7 @@
    {
     "id": "00000000000000000000000030000001",
     "content": [
-     "Mesa Ridge Pressure Pumping (fictional; all data synthetic) runs 15 dual-fuel frac fleets (F01-F15), 20 active + 4 standby pumps each.\nThe demo clock: \"now\" is (SELECT max(scored_hour) FROM production_forecasting_catalog.frac_pump_pdm.gold_ranked_actions) (2026-10-28 12:00). \"This week\" = the 7 days before now; \"last quarter\" = the 90 days before now.\nWhere to find things:\n- Fleet KPIs by day (pumping hours, unplanned failures, pump-caused NPT hours, maintenance $): gold_fleet_kpis_daily.\n- Every CMMS event (calendar valve changes, planned fluid end changes, unplanned failures with failure_mode): silver_maintenance.\n- Current model risk per pump: gold_pump_risk_scores. Pumps worth acting on, ranked by expected $ protected: gold_ranked_actions.\n- Work orders created in the dispatch app (Lakebase, synced back to UC): ops_work_orders. Seeded history has is_synthetic_seed = true.\n- Dollar assumptions: value_assumptions (key/value) and mode_costs (cost_if_failed and planned_fix per failure mode). Never invent dollar figures; take them from these tables.\nDefinitions:\n- MTBF by failure mode = total pumping hours (sum of gold_fleet_kpis_daily.pump_hours) / number of unplanned failures of that mode in silver_maintenance.\n- NPT = pump_caused_npt_hrs. Expected $ protected is modeled (from the ML risk score and the value model), not realized savings. Say \"expected\" or \"modeled\".\n- Failure modes: valve_seat_washout, packing_failure, power_end_bearing.\n"
+     "Mesa Ridge Pressure Pumping (fictional; all data synthetic) runs 15 dual-fuel frac fleets (F01-F15), 20 active + 4 standby pumps each.\nThe demo clock: \"now\" is (SELECT max(scored_hour) FROM production_forecasting_catalog.frac_pump_pdm.gold_ranked_actions) (2026-10-28 12:00). \"This week\" = the 7 days before now; \"last quarter\" = the 90 days before now.\nWhere to find things:\n- Fleet KPIs by day (pumping hours, unplanned failures, pump-caused NPT hours, maintenance $): gold_fleet_kpis_daily.\n- Every CMMS event (calendar valve changes, planned fluid end changes, unplanned failures with failure_mode): silver_maintenance.\n- Current model risk per pump: gold_pump_risk_scores. Pumps worth acting on, ranked by expected $ protected: gold_ranked_actions.\n- Work orders created in the dispatch app (Lakebase, synced back to UC): ops_work_orders. Seeded history has is_synthetic_seed = true.\n- Dollar assumptions: value_assumptions (key/value) and mode_costs (cost_if_failed and planned_fix per failure mode). Never invent dollar figures; take them from these tables.\nDefinitions:\n- MTBF by failure mode = total pumping hours (sum of gold_fleet_kpis_daily.pump_hours) / number of unplanned failures of that mode in silver_maintenance.\n- NPT = pump_caused_npt_hrs. Expected $ protected is modeled (from the ML risk score and the value model), not realized savings. Say \"expected\" or \"modeled\".\n- Failure modes: valve_seat_washout, packing_failure, power_end_bearing.\nValue the app delivers: value_model_app (one row per scenario, conservative and target): failures_caught, gross_avoided_usd - false_alarm_cost_usd - platform_cost_usd = net_ebitda_usd, failure_cost_reduction_pct. When asked what the app is worth, answer with net_ebitda_usd for both scenarios. expansion_upside_usd is NOT delivered value; only mention it if asked about future opportunity, and label it 'expansion upside, not in the app'.\n"
     ]
    }
   ],

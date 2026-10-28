@@ -6,3 +6,5 @@
 - **Look up the operating basis before assuming it.** 3,600 pumping hrs was a guess. Patterson-UTI and Liberty publish 21-22 pumping hrs per on-pad day.
 - **Synthetic data calibrated to the value model is circular.** Say so in the deck. It proves the pipeline works, not the value.
 - **POC criteria must be measurable within the POC.** A backtest can only validate lever 1 (failures caught). Levers 2-3 need a baseline now and measurement in the pilot.
+- **Headline value must be something the demo visibly does.** v3 headlined a $9-11M "program" where ~80% came from levers (fluid end life, consumables) the app never touched. The user couldn't connect the number to the app. Now: headline = only app-delivered value; adjacent opportunity goes on the next-steps slide as labeled upside.
+- **Lead with the relative cut, not % of EBITDA.** 0.6-1.3% of EBITDA sounds small to an exec; "22-44% less spent on unplanned pump failures" and "70-140 breakdowns prevented" land, and they're the same value.

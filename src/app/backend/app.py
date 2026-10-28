@@ -331,7 +331,7 @@ def _uc_performance():
                    FROM {FQ}.silver_maintenance m JOIN {FQ}.mode_costs c ON c.failure_mode = m.failure_mode
                    WHERE m.event_type = 'unplanned_failure' GROUP BY m.failure_mode, c.cost_if_failed, c.planned_fix
                    ORDER BY annual_cost_usd DESC""")
-    levers = wh(f"SELECT scenario, lever, annual_usd, proven_in FROM {FQ}.value_model_levers")
+    app_value = wh(f"SELECT * FROM {FQ}.value_model_app ORDER BY scenario")
     comp = {r["metric"]: r for r in wh(f"SELECT * FROM {FQ}.ml_model_comparison")}
     num = lambda run, k: float(comp[k][run]) if k in comp else None
     model = {run: {k: num(run, k) for k in ["recall", "precision", "false_alarms_per_pump_month", "median_lead_hrs",
@@ -341,7 +341,7 @@ def _uc_performance():
                for m in MODE_LABEL]
     _perf_cache.update(at=time.time(), uc={
         "weekly": [clean(r) for r in weekly], "fleet": [clean(r) for r in fleet], "by_mode_cost": [clean(r) for r in modes],
-        "levers": [clean(r) for r in levers], "model": model, "model_recall_by_mode": by_mode})
+        "app_value": [clean(r) for r in app_value], "model": model, "model_recall_by_mode": by_mode})
     return _perf_cache["uc"]
 
 

@@ -2,14 +2,14 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, errMsg } from "../api";
 import { MODE_LABEL, STATUS_LABEL, fmtDay, fmtDayTime, fmtUsd, fmtUsdFull, parseLocal } from "../format";
 import { useToast } from "../toast";
-import type { Performance, PerfLever } from "../types";
+import type { Performance } from "../types";
 import {
   FleetChart,
-  LeverChart,
   ModeCostChart,
   ProtectedCharts,
   RecallChart,
   StatusChart,
+  WaterfallChart,
   WeeklyCharts,
   weekRows,
 } from "./performanceCharts";
@@ -47,7 +47,7 @@ export function PerformanceView() {
     return <div className="empty">Loading performance data...</div>;
   }
 
-  const { tiles, captions } = derived;
+  const { tiles, captions, wf } = derived;
 
   return (
     <div className="perf">
@@ -71,16 +71,28 @@ export function PerformanceView() {
 
       <div className="perf-grid">
         <Card
-          title="Where the value comes from"
+          title="From failure cost avoided to added EBITDA"
           caption={captions.lever}
+          wide
           table={
             <DataTable
-              head={["Lever", "Proven in", "Conservative", "Target"]}
-              rows={derived.leverTable.map((r) => [r.lever, r.provenIn || "n/a", fmtUsdFull(r.conservative), fmtUsdFull(r.target)])}
+              head={["Step", "Conservative", "Target"]}
+              rows={[
+                ["Failure cost avoided", fmtUsdFull(wf.conservative.gross), fmtUsdFull(wf.target.gross)],
+                ["False-alarm inspections", fmtUsdFull(-wf.conservative.falseAlarm), fmtUsdFull(-wf.target.falseAlarm)],
+                ["Platform run rate", fmtUsdFull(-wf.conservative.platform), fmtUsdFull(-wf.target.platform)],
+                ["Added EBITDA", fmtUsdFull(wf.conservative.net), fmtUsdFull(wf.target.net)],
+                ["Catch rate", pct(data.app_value[0].catch_rate), pct(data.app_value[1].catch_rate)],
+                ["Failures caught of total", `${data.app_value[0].failures_caught} of ${data.app_value[0].failures_total}`, `${data.app_value[1].failures_caught} of ${data.app_value[1].failures_total}`],
+              ]}
             />
           }
         >
-          <LeverChart levers={data.levers} />
+          <div className="perf-wf-pair">
+            <WaterfallChart s={wf.conservative} max={wf.max} />
+            <WaterfallChart s={wf.target} max={wf.max} />
+          </div>
+          <p className="perf-returns">{derived.returnLine}</p>
         </Card>
 
         <Card
@@ -213,6 +225,9 @@ export function PerformanceView() {
       <p className="perf-footnote">
         {data.note} Modeled estimates from value_model.py; synthetic data.
       </p>
+      <p className="perf-footnote">
+        Expansion upside, not in the app: ~{fmtUsd(derived.expansion)}/yr from longer fluid end life and condition-based consumables (sized in value_model.py, scoped after the pilot).
+      </p>
     </div>
   );
 }
@@ -222,28 +237,51 @@ export function PerformanceView() {
 // from the response, so the text always matches the charts.
 // ---------------------------------------------------------------------------
 function derive(d: Performance) {
-  const program = d.levers.filter((l) => l.lever === "Program total");
-  const programCons = program.find((l) => l.scenario === "conservative")?.annual_usd ?? 0;
-  const programTarget = program.find((l) => l.scenario === "target")?.annual_usd ?? 0;
-  const ml = d.levers.filter((l) => l.lever === "Failures caught early (ML)");
-  const mlCons = ml.find((l) => l.scenario === "conservative")?.annual_usd ?? 0;
-  const mlTarget = ml.find((l) => l.scenario === "target")?.annual_usd ?? 0;
-  const unplanned = d.by_mode_cost.reduce((s, m) => s + m.annual_cost_usd, 0);
+  const conservative = d.app_value.find((a) => a.scenario === "conservative");
+  const target = d.app_value.find((a) => a.scenario === "target");
+  if (!conservative || !target) throw new Error("app_value must include conservative and target scenarios");
+  const cons = conservative;
+  const tgt = target;
+  const lo = (f: (a: typeof cons) => number) => f(cons);
+  const hi = (f: (a: typeof cons) => number) => f(tgt);
+
   const protectedNow = d.protected_daily.length ? d.protected_daily[d.protected_daily.length - 1].cumulative_usd : 0;
   const woTotal = d.protected_daily.reduce((s, x) => s + x.work_orders, 0);
+  const baseline = cons.baseline_failure_cost_usd;
 
-  const leverTable = d.levers
-    .filter((l) => l.lever !== "Program total")
-    .reduce<{ lever: string; provenIn: string; conservative: number; target: number }[]>((acc, l: PerfLever) => {
-      let row = acc.find((r) => r.lever === l.lever);
-      if (!row) {
-        row = { lever: l.lever, provenIn: l.proven_in, conservative: 0, target: 0 };
-        acc.push(row);
-      }
-      if (l.scenario === "conservative") row.conservative = l.annual_usd;
-      else row.target = l.annual_usd;
-      return acc;
-    }, []);
+  const tiles = [
+    {
+      label: "Added EBITDA (est.)",
+      value: rangeUsd(lo((a) => a.net_ebitda_usd), hi((a) => a.net_ebitda_usd)),
+      sub: "per year, conservative to target",
+    },
+    {
+      label: "Less spent on unplanned failures",
+      value: `${Math.round(lo((a) => a.failure_cost_reduction_pct))}-${Math.round(hi((a) => a.failure_cost_reduction_pct))}%`,
+      sub: `of ~${fmtUsd(baseline)} / yr today`,
+    },
+    {
+      label: "Breakdowns prevented",
+      value: `${cons.failures_caught}-${tgt.failures_caught} of ${cons.failures_total}`,
+      sub: `${Math.round(cons.spread_hrs_recovered)}-${Math.round(tgt.spread_hrs_recovered)} spread hrs back`,
+    },
+    {
+      label: "$ protected (last 30 days)",
+      value: fmtUsd(protectedNow),
+      sub: `cumulative, ${woTotal} work orders`,
+    },
+  ];
+
+  const returnLine =
+    `Return on platform: ${cons.return_on_platform_x.toFixed(1)}-${tgt.return_on_platform_x.toFixed(1)}x · ` +
+    `Payback ${tgt.payback_months.toFixed(1)}-${cons.payback_months.toFixed(1)} months (pumps already instrumented) · ` +
+    `${cons.pct_fleet_ebitda.toFixed(1)}-${tgt.pct_fleet_ebitda.toFixed(1)}% of fleet EBITDA`;
+
+  const wf = {
+    conservative: { label: "Conservative", gross: cons.gross_avoided_usd, falseAlarm: cons.false_alarm_cost_usd, platform: cons.platform_cost_usd, net: cons.net_ebitda_usd },
+    target: { label: "Target", gross: tgt.gross_avoided_usd, falseAlarm: tgt.false_alarm_cost_usd, platform: tgt.platform_cost_usd, net: tgt.net_ebitda_usd },
+    max: Math.max(cons.gross_avoided_usd, tgt.gross_avoided_usd) * 1.2,
+  };
 
   const modes = [...d.by_mode_cost].sort((a, b) => b.annual_cost_usd - a.annual_cost_usd);
   const topMode = modes[0];
@@ -256,31 +294,8 @@ function derive(d: Performance) {
   const cal = d.model.calendar_baseline;
   const doneRow = d.work_order_status.find((s) => s.status === "done");
 
-  const tiles = [
-    {
-      label: "Program value (est.)",
-      value: rangeUsd(programCons, programTarget),
-      sub: "per year, conservative to target",
-    },
-    {
-      label: "ML-attributable",
-      value: rangeUsd(mlCons, mlTarget),
-      sub: "per year, failures caught early",
-    },
-    {
-      label: "Unplanned failure cost",
-      value: fmtUsd(unplanned),
-      sub: "per year, all three failure modes",
-    },
-    {
-      label: "$ protected, last 30 days",
-      value: fmtUsd(protectedNow),
-      sub: `cumulative, ${woTotal} work orders`,
-    },
-  ];
-
   const captions = {
-    lever: `Program value runs ${rangeUsd(programCons, programTarget)} a year. The ML lever is ${rangeUsd(mlCons, mlTarget)} of that.`,
+    lever: `Failure cost avoided, less false-alarm inspections and platform run rate, leaves ${rangeUsd(cons.net_ebitda_usd, tgt.net_ebitda_usd)} of added EBITDA a year.`,
     mode: `${MODE_LABEL[topMode.failure_mode] ?? topMode.failure_mode} is the largest unplanned cost at ${fmtUsd(topMode.annual_cost_usd)} a year.`,
     fleet: `${topFleet.fleet_id} leads with ${fmtUsd(topFleet.protected_30d_usd)} protected in 30 days. Bars are sorted by protection.`,
     weekly: `Pump-caused NPT totals ${npt.toFixed(1)} hrs and ${failures} unplanned failures over 52 weeks.`,
@@ -293,7 +308,7 @@ function derive(d: Performance) {
 
   const weekly = weekRows(d.weekly, d.as_of);
 
-  return { tiles, captions, leverTable, fleetSorted, weekRows: weekly };
+  return { tiles, captions, returnLine, wf, expansion: cons.expansion_upside_usd, fleetSorted, weekRows: weekly };
 }
 
 // ---------------------------------------------------------------------------

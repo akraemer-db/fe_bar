@@ -5,15 +5,15 @@ Single source of truth for every dollar and hour figure in the deck, app, and Ge
 
 Run: python3 value_model.py   (prints scenarios + sensitivity, writes CSVs + value_model_output.md)
 
-Levers
-  1. ML-attributable: unplanned valve/seat, packing and power end failures caught a stage ahead.
-     Measured in the POC backtest.
-  2. Program: fluid end life extension. Mechanism: the same telemetry flags cavitation and
-     operating-envelope abuse (low suction at high HHP, pressure spikes). Fixing the suction side
-     extends fluid end life, which is the root cause behind Evolution Well Services' +63%.
-     It's analytics on the same platform, not the 24-hr classifier. Measured in the pilot.
-  3. Program: condition-based consumables, replacing valves/seats/packing on condition, not hours.
-     Measured in the pilot.
+Headline value = only what the app delivers (lever 1):
+  1. Unplanned valve/seat, packing and power end failures caught a stage ahead by the classifier and
+     dispatched by the app. Gross avoided cost - false-alarm inspections - platform run rate = net EBITDA.
+     Measured in the POC backtest. Published to UC as value_model_app by the scoring job.
+
+Expansion upside (computed for sizing only, never in a headline, tile, or total):
+  2. Fluid end life extension: flag cavitation / out-of-envelope operation and fix the suction side
+     (the root cause behind Evolution Well Services' +63%). Not built in the app.
+  3. Condition-based consumables: replace valves/seats/packing on condition, not hours. Not built in the app.
 
 All outputs are MODELED ESTIMATES. Tags: SOURCED (public source), ESTIMATE (our estimate),
 VALIDATE (replaced with customer data in the POC).
@@ -63,7 +63,7 @@ ASSUMPTIONS = {
     "implementation_one_time":  (750_000, "$", "Services + customer team + edge config", "ESTIMATE"),
     "sensor_retrofit_allowance": (3_000_000, "$", "~$10k/pump x 300 if sensors are missing; $0 if already instrumented", "VALIDATE"),
     "platform_run_rate":        (600_000, "$/yr", "Databricks consumption, 15 fleets", "ESTIMATE"),
-    # program levers
+    # expansion upside (sizing only; not claimed in the headline)
     "fe_life_extension":        (0.10, "share", "Conservative vs Evolution +63% (cavitation root cause fixed)", "SOURCED"),
     "consumables_per_fleet":    (1.2e6, "$/yr", "Valves, seats, packing, plungers; replace with AP", "VALIDATE"),
     "consumables_reduction":    (0.10, "share", "Conservative vs Baker Hughes +27% valve life with condition monitoring", "SOURCED"),
