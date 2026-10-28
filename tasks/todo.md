@@ -47,5 +47,23 @@ See `PROJECT_PLAN.md` for specs. Every item needs a text evidence artifact befor
 - [ ] Full down/up rehearsal from a clean slate
 - [ ] Scrub check + push to personal public repo; name evidence paths in the submission box
 
-## Review
-(filled in at the end)
+## First-pass review (2026-10-28)
+Working end to end on fevm-production-forecasting:
+- Platform bundle: schema, volume, experiment, UC model, Lakebase project, SDP pipeline, build_demo job
+- Data: 1,552,280 telemetry rows; 279 unplanned failures (152/82/45) calibrated to the value model
+- Pipeline: 250 corrupt rows dropped by expectations; gold features + labels; fleet KPIs
+- Governance: governed tags (tag policy enforced), phone column mask, class.phone_number tag
+- ML: calibrated LightGBM v1 @champion. Test: 58/66 caught (88%), precision 54%, 0.05 false alarms/pump-month
+- Ranked actions: F07-P09 power end #1 ($72.6k), F07-P14 valve #2, F03-P02 packing #3
+- Serve bundle: 3 synced tables online, endpoint (267 ms), Genie space from JSON, app live
+- Lakehouse Sync: ops work orders stream back to UC; ops_work_orders view feeds Genie
+- App: all 11 routes tested through the live URL (curl)
+
+## Second pass (next)
+- [ ] Make the data harder: target recall 55-70%, calibrated risk < 0.95, 6-8 at-risk pumps incl. one false alarm
+- [ ] Calendar baseline: report variants (k = 60/70/80/90) instead of "never alarm"
+- [ ] Notebooks end with dbutils.notebook.exit(summary) so evidence pulls real outputs
+- [ ] collect_evidence.py + check_evidence.sh + E2E trace
+- [ ] README (master evidence map) + DECISIONS.md; plan/research to docs/; deck refresh with real model numbers; deck <9k
+- [ ] Full make down && make up rehearsal
+

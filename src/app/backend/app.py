@@ -311,6 +311,15 @@ def timeline(hours: int = 48):
             "stage_gaps": [clean(g) for g in gaps]}
 
 
+@app.post("/api/demo/reset")
+def reset_demo():
+    """Remove work orders created during the demo; seeded history stays. Deletes also stream to UC via Lakehouse Sync."""
+    with pg() as c:
+        c.execute("DELETE FROM ops.wo_events WHERE wo_id IN (SELECT wo_id FROM ops.work_orders WHERE NOT is_synthetic_seed)")
+        n = c.execute("DELETE FROM ops.work_orders WHERE NOT is_synthetic_seed").rowcount
+    return {"deleted_work_orders": n}
+
+
 class GenieReq(BaseModel):
     question: str
     conversation_id: str | None = None

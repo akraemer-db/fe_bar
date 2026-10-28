@@ -78,7 +78,7 @@ def grant_app():
     app = cli("apps", "get", "frac-reliability-center")
     sp = app["service_principal_client_id"]
     psql("-c", f'''GRANT USAGE ON SCHEMA ops TO "{sp}";
-                   GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA ops TO "{sp}";
+                   GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA ops TO "{sp}";
                    GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA ops TO "{sp}";
                    GRANT USAGE ON SCHEMA {SCHEMA} TO "{sp}";
                    GRANT SELECT ON ALL TABLES IN SCHEMA {SCHEMA} TO "{sp}";''')

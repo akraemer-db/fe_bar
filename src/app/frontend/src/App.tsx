@@ -26,6 +26,17 @@ export function App() {
       .catch((e) => notify(errMsg(e), "error"));
   }, [notify]);
 
+  const resetDemo = async () => {
+    if (!window.confirm("Reset the demo? This removes every work order dispatched in the demo (seeded history stays).")) return;
+    try {
+      const r = await api.resetDemo();
+      notify(`Demo reset: removed ${r.deleted_work_orders} work order(s)`, "success");
+      setTimeout(() => window.location.reload(), 600);
+    } catch (e) {
+      notify(errMsg(e), "error");
+    }
+  };
+
   const modelName = health ? health.model_name.split(".").pop() ?? health.model_name : "frac_pump_failure_model";
 
   return (
@@ -55,6 +66,9 @@ export function App() {
           <span className="model-badge" title={health?.model_name ?? "model status unavailable"}>
             {health ? `${modelName} v${health.model_version}` : "model status unavailable"}
           </span>
+          <button type="button" className="btn" onClick={resetDemo} title="Remove work orders dispatched in this demo">
+            Reset demo
+          </button>
           <button
             type="button"
             className={`btn ${genieOpen ? "btn-active" : ""}`}

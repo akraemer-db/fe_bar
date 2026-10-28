@@ -70,6 +70,7 @@ export const api = {
   patchWorkOrder: (woId: string, status: WorkOrderStatus) =>
     request<WorkOrder>("PATCH", `/api/work_orders/${enc(woId)}`, { status }),
   timeline: (hours: number) => request<Timeline>("GET", `/api/timeline?hours=${hours}`),
+  resetDemo: () => request<{ deleted_work_orders: number }>("POST", "/api/demo/reset"),
   genieAsk: (question: string, conversationId: string | null) =>
     request<GenieResponse>("POST", "/api/genie/ask", { question, conversation_id: conversationId }),
 };

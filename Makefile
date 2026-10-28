@@ -3,12 +3,13 @@
 #   make down       tear everything down (serve, Lakehouse Sync, platform incl. Lakebase project purge)
 #   make redeploy   down + up
 #   make rebuild    rerun the build job on existing infra and refresh the synced tables
+#   make reset      clear work orders dispatched during a demo (seeded history stays)
 #   make evidence   regenerate evidence/*.md from the live workspace
 PROFILE ?= fe-vm-production-forecasting
 export DATABRICKS_CONFIG_PROFILE := $(PROFILE)
 PY := python3
 
-.PHONY: up down redeploy rebuild platform build ops frontend serve grants start evidence check
+.PHONY: reset up down redeploy rebuild platform build ops frontend serve grants start evidence check
 
 up: platform build ops frontend serve grants start
 
@@ -43,6 +44,9 @@ down:
 	cd bundles/platform && databricks bundle destroy --auto-approve
 
 redeploy: down up
+
+reset:
+	scripts/lakebase_psql.sh -c "DELETE FROM ops.wo_events WHERE wo_id IN (SELECT wo_id FROM ops.work_orders WHERE NOT is_synthetic_seed); DELETE FROM ops.work_orders WHERE NOT is_synthetic_seed;"
 
 evidence:
 	$(PY) scripts/collect_evidence.py

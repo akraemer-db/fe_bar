@@ -517,6 +517,7 @@ export async function mockRequest<T>(method: string, path: string, body?: unknow
     return out(health);
   }
   if (method === "GET" && p === "/api/summary") return out(buildSummary());
+  if (method === "POST" && p === "/api/demo/reset") return out({ deleted_work_orders: 0 });
   if (method === "GET" && p === "/api/actions") return out(buildActions());
 
   if (method === "GET" && (m = p.match(/^\/api\/pumps\/([^/]+)\/trend$/))) {
