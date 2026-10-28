@@ -1,0 +1,88 @@
+
+== CONSERVATIVE ==
+                        catch_rate: 0.250
+                         precision: 0.500
+                      active_pumps: 300
+                 fluid_end_changes: 938
+                   fluid_end_spend: 60,937,500
+         fluid_end_spend_per_fleet: 4,062,500
+                  unplanned_events: 279
+                    events_by_mode: {'valve_seat_washout': 152.3, 'packing_failure': 82.0, 'power_end_bearing': 45.0}
+             baseline_failure_cost: 11,897,878
+             baseline_pump_npt_hrs: 362
+   baseline_pump_npt_hrs_per_fleet: 24
+                     events_caught: 70
+               avg_value_per_catch: 37,369
+               false_alarms_per_yr: 70
+       false_alarms_per_pump_month: 0.019
+              break_even_precision: 0.097
+                         lever1_ml: 1,730,641
+                  lever1_per_fleet: 115,376
+                    lever2_fe_life: 5,539,773
+                lever3_consumables: 1,800,000
+                     program_total: 9,070,414
+                 program_per_fleet: 604,694
+          program_pct_fleet_ebitda: 0.034
+           lever1_pct_fleet_ebitda: 0.006
+              spread_hrs_recovered: 91
+                   stages_capacity: 36
+             payback_months_lever1: 5.200
+   payback_months_lever1_w_sensors: 26
+            payback_months_program: 0.992
+  payback_months_program_w_sensors: 4.961
+
+== TARGET ==
+                        catch_rate: 0.500
+                         precision: 0.350
+                      active_pumps: 300
+                 fluid_end_changes: 938
+                   fluid_end_spend: 60,937,500
+         fluid_end_spend_per_fleet: 4,062,500
+                  unplanned_events: 279
+                    events_by_mode: {'valve_seat_washout': 152.3, 'packing_failure': 82.0, 'power_end_bearing': 45.0}
+             baseline_failure_cost: 11,897,878
+             baseline_pump_npt_hrs: 362
+   baseline_pump_npt_hrs_per_fleet: 24
+                     events_caught: 140
+               avg_value_per_catch: 37,369
+               false_alarms_per_yr: 259
+       false_alarms_per_pump_month: 0.072
+              break_even_precision: 0.097
+                         lever1_ml: 3,582,354
+                  lever1_per_fleet: 238,824
+                    lever2_fe_life: 5,539,773
+                lever3_consumables: 1,800,000
+                     program_total: 10,922,127
+                 program_per_fleet: 728,142
+          program_pct_fleet_ebitda: 0.040
+           lever1_pct_fleet_ebitda: 0.013
+              spread_hrs_recovered: 181
+                   stages_capacity: 72
+             payback_months_lever1: 2.512
+   payback_months_lever1_w_sensors: 13
+            payback_months_program: 0.824
+  payback_months_program_w_sensors: 4.120
+
+== Mode costs (EBITDA basis) ==
+revenue_per_spread_hr (derived): $10,417
+  valve_seat_washout: cost if failed $38,557 | planned fix $5,000 | owner Pump tech
+     packing_failure: cost if failed $26,646 | planned fix $3,000 | owner Pump tech
+   power_end_bearing: cost if failed $85,292 | planned fix $10,000 | owner Shop (swap to standby)
+
+== Hero ranked actions (decide_action) ==
+F07-P09 (quiet: lube oil +9F, crank LF vibration creeping): {'mode': 'power_end_bearing', 'risk': 0.72, 'cost_if_failed': 85292, 'planned_fix': 10000, 'standby_available': True, 'options': {'keep_running': -61410, 'pull_now': -12734, 'swap_at_next_gap': -13838}, 'best_action': 'pull_now', 'expected_savings': 48676}
+F07-P14 (loud: cylinder 3 valve impact energy rising): {'mode': 'valve_seat_washout', 'risk': 0.86, 'cost_if_failed': 38557, 'planned_fix': 5000, 'standby_available': True, 'options': {'keep_running': -33159, 'pull_now': -7734, 'swap_at_next_gap': -7072}, 'best_action': 'swap_at_next_gap', 'expected_savings': 26087}
+F03-P02 (packing temp rising, lube delivery dropping): {'mode': 'packing_failure', 'risk': 0.55, 'cost_if_failed': 26646, 'planned_fix': 3000, 'standby_available': True, 'options': {'keep_running': -14655, 'pull_now': -5734, 'swap_at_next_gap': -3916}, 'best_action': 'swap_at_next_gap', 'expected_savings': 10739}
+F07-P09 with NO standby free: {'mode': 'power_end_bearing', 'risk': 0.72, 'cost_if_failed': 85292, 'planned_fix': 10000, 'standby_available': False, 'options': {'keep_running': -61410, 'pull_now': -24583}, 'best_action': 'pull_now', 'expected_savings': 36827}
+
+== Sensitivity (conservative) ==
+  share_events_causing_npt 0.0 -> 1.0: lever1_ml $1.4M -> $2.1M
+        unplanned_fe_share 0.1 -> 0.35: lever1_ml $0.8M -> $2.3M
+      pe_failures_per_pump 0.05 -> 0.25: lever1_ml $1.2M -> $2.3M
+      pumping_hrs_per_pump 3600 -> 6000: lever1_ml $1.3M -> $2.0M
+       contribution_margin 0.25 -> 0.5: lever1_ml $1.6M -> $1.9M
+    precision_conservative 0.25 -> 0.75: lever1_ml $1.2M -> $1.9M
+      valve_seat_fe_damage 0.2 -> 1.0: lever1_ml $1.2M -> $3.2M
+         fe_life_extension 0.05 -> 0.2: program_total $6.4M -> $13.7M
+     consumables_reduction 0.05 -> 0.2: program_total $8.2M -> $10.9M
+Hero check at valve_seat_fe_damage=1.0: F07-P14 58,965 vs F07-P09 48,676

@@ -1,0 +1,4 @@
+failure_mode,npt_hrs_if_stops_spread,damage_cost,planned_fix,owner,cost_if_failed
+valve_seat_washout,2.5,26000.0,5000,Pump tech,38557
+packing_failure,2.0,15000,3000,Pump tech,26646
+power_end_bearing,4.0,70000,10000,Shop (swap to standby),85292

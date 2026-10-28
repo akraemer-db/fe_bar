@@ -1,0 +1,39 @@
+key,value,unit,source,tag
+fleets,15,fleets,Fictional company sizing,ESTIMATE
+active_pumps_per_fleet,20,pumps,"Typical 20-24 units incl. standby (ProPetro 50-80k HHP / 2,500 HHP units)",SOURCED
+standby_pumps_per_fleet,4,pumps,Same as above,SOURCED
+revenue_per_fleet,75000000.0,$/yr,ProPetro 2025 frac revenue / active fleets = $70-80M,SOURCED
+ebitda_per_fleet,18000000.0,$/yr,ProPetro 2025 frac adj. EBITDA / fleet $15-21M (ProFrac margins lower),SOURCED
+operating_days,300,days/yr,Planning assumption,VALIDATE
+pumping_hrs_per_pump,5000,pumping hrs/yr per active pump,Patterson-UTI: ~21-22 pumping hrs per on-pad day (fleet level); allow pad moves + rotation,VALIDATE
+contribution_margin,0.35,share of lost revenue,Between ProPetro EBITDA margin (~22-25%) and incremental margin,VALIDATE
+fluid_end_life_hrs,1600,pumping hrs,SPM: stainless fluid end industry average,SOURCED
+fluid_end_cost,65000,$,Kerr/SPM $40-90k; planning $65k,SOURCED
+unplanned_fe_share,0.25,share of fluid end changes,Replace with CMMS planned/unplanned flag,VALIDATE
+fe_mix_valve_seat,0.65,share of unplanned FE events,Estimate; valve/seat dominant,VALIDATE
+fe_mix_packing,0.35,share of unplanned FE events,Estimate,VALIDATE
+pe_failures_per_pump,0.15,per active pump per yr,Replace with CMMS,VALIDATE
+share_events_causing_npt,0.5,share,Standby pumps absorb the rest; replace with NPT log,VALIDATE
+expedite_cost,8000,$/event,"Hot-shot parts, overtime; replace with AP",VALIDATE
+valve_seat_npt_hrs,2.5,spread hrs if it stops the spread,Estimate,VALIDATE
+valve_seat_fe_damage,0.4,share of fluid end value destroyed by washout,"Estimate: some seat decks are repairable, some retire the block. Sensitivity 0.2-1.0",VALIDATE
+valve_seat_planned_fix,5000,$,Supplier QPA2500 consumables overhaul $3.3-5.2k incl. labor,SOURCED
+packing_npt_hrs,2.0,spread hrs,Estimate,VALIDATE
+packing_bore_repair,15000,$,Estimate: packing bore repair/sleeve,VALIDATE
+packing_planned_fix,3000,$,Estimate,VALIDATE
+power_end_npt_hrs,4.0,spread hrs,Estimate,VALIDATE
+power_end_rebuild,70000,$,FTSI $45k (2020) to $100k major rebuild; planning $70k,SOURCED
+power_end_planned_fix,10000,$,Supplier limited power end overhaul $6-10k,SOURCED
+risk_horizon_hrs,24,pumping hrs,Model label window (~3 stages),ESTIMATE
+hrs_to_next_gap,1.5,pumping hrs,Typical time to next stage gap,ESTIMATE
+pull_now_npt_hrs,0.75,spread hrs,Unscheduled stop to isolate and swap,ESTIMATE
+precision_conservative,0.5,share,Operating point at 25% catch (higher threshold),VALIDATE
+precision_target,0.35,share,Operating point at 50% catch (lower threshold),VALIDATE
+false_alarm_cost,4000,$/alarm,Standby swap + teardown inspection + consumables replaced while open,ESTIMATE
+implementation_one_time,750000,$,Services + customer team + edge config,ESTIMATE
+sensor_retrofit_allowance,3000000,$,~$10k/pump x 300 if sensors are missing; $0 if already instrumented,VALIDATE
+platform_run_rate,600000,$/yr,"Databricks consumption, 15 fleets",ESTIMATE
+fe_life_extension,0.1,share,Conservative vs Evolution +63% (cavitation root cause fixed),SOURCED
+consumables_per_fleet,1200000.0,$/yr,"Valves, seats, packing, plungers; replace with AP",VALIDATE
+consumables_reduction,0.1,share,Conservative vs Baker Hughes +27% valve life with condition monitoring,SOURCED
+stages_per_day,9.5,stages/day,AADE 2025: 8.9-9.8 continuous pumping,SOURCED
