@@ -9,7 +9,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install -q lightgbm==4.5.0
+# MAGIC %pip install -q lightgbm==4.5.0 tabulate
 # MAGIC %restart_python
 
 # COMMAND ----------
@@ -53,7 +53,7 @@ DRIVERS = {
     "power_end_bearing": [("pe_vib_lf_ips_avg6", "crank LF vibration", "%"), ("lube_oil_temp_f_avg6", "lube oil temp", "F"),
                           ("lube_oil_psi_avg6", "lube oil pressure", "psi")],
 }
-med = latest[[c for v in DRIVERS.values() for c, _, _ in v]].median()
+med = latest[sorted({c for v in DRIVERS.values() for c, _, _ in v})].median()
 
 def drivers(row, mode):
     out = []

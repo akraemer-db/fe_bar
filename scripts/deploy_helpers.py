@@ -43,7 +43,8 @@ def psql(*args):
 
 
 def resolve():
-    v = cli("registered-models", "get-by-alias", f"{FQ}.frac_pump_failure_model", "champion")["version"]
+    m = cli("registered-models", "get", f"{FQ}.frac_pump_failure_model", "--include-aliases")
+    v = next(a["version_num"] for a in m["aliases"] if a["alias_name"] == "champion")
     me = cli("current-user", "me")["userName"]
     e = cli("experiments", "get-by-name", f"/Users/{me}/frac_pump_pdm")["experiment"]["experiment_id"]
     print(f"--var model_version={v} --var experiment_id={e}")
@@ -54,13 +55,7 @@ def ops_sync():
     configs = cli("postgres", "list-cdf-configs", DB, check=False) or []
     if not any(c.get("cdf_config_id") == "ops_to_uc" for c in configs):
         cli("postgres", "create-cdf-config", DB, CATALOG, SCHEMA, "ops", "--cdf-config-id", "ops_to_uc")
-    for _ in range(60):  # new tables are picked up within a minute or two
-        st = cli("postgres", "list-cdf-statuses", CDF, check=False) or []
-        if sum(s.get("state") == "CDF_STATE_STREAMING" for s in st) >= 2:
-            break
-        time.sleep(10)
-    else:
-        sys.exit(f"Lakehouse Sync not streaming: {st}")
+    # Lakehouse Sync discovers a table on its first write and captures that write, so seed right away
     psql("-f", f"{HERE}/lakebase_ops_seed.sql")
     for _ in range(60):
         names = {r[1] for r in sql(f"SHOW TABLES IN {FQ} LIKE 'lb_*_history'")}

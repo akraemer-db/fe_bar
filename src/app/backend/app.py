@@ -89,7 +89,8 @@ def wh(query, params=None):
 
 
 def iso(v):
-    return v.isoformat() if isinstance(v, datetime) else v
+    # wall-clock demo time: drop tz so the browser doesn't shift it
+    return v.replace(tzinfo=None).isoformat() if isinstance(v, datetime) else v
 
 
 def clean(row):
@@ -211,7 +212,7 @@ Parts available for this mode:
 {json.dumps(parts, indent=1)}
 
 Rules: cite the procedure IDs you used. Never state torque, pressure, or test values; refer to the OEM manual and site procedure.
-Always include the isolation/zero-energy step. Output markdown with sections: Why this pump, Steps, Parts kit, Safety, Estimated time."""
+Always include the isolation/zero-energy step. No emojis. Plain, professional field language. Output markdown with sections: Why this pump, Steps, Parts kit, Safety, Estimated time."""
     out = w.serving_endpoints.get_open_ai_client().chat.completions.create(
         model=LLM, messages=[{"role": "user", "content": prompt}], max_tokens=900, temperature=0.2)
     return out.choices[0].message.content

@@ -12,7 +12,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install -q lightgbm==4.5.0
+# MAGIC %pip install -q lightgbm==4.5.0 tabulate
 # MAGIC %restart_python
 
 # COMMAND ----------
