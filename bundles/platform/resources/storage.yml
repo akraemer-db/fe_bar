@@ -1,0 +1,30 @@
+resources:
+  schemas:
+    frac_pump_pdm:
+      catalog_name: ${var.catalog}
+      name: ${var.schema}
+      comment: "Frac pump predictive maintenance demo (fictional Mesa Ridge Pressure Pumping, synthetic data)."
+      properties:
+        domain: reliability
+      grants:
+        - principal: account users
+          privileges: [USE_SCHEMA, SELECT]
+
+  volumes:
+    raw_landing:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.frac_pump_pdm.name}
+      name: raw_landing
+      volume_type: MANAGED
+      comment: "Edge gateway telemetry (JSON) and CMMS exports (CSV) land here for Auto Loader."
+
+  experiments:
+    pdm_experiment:
+      name: /Users/${workspace.current_user.userName}/frac_pump_pdm
+
+  registered_models:
+    frac_pump_failure_model:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.frac_pump_pdm.name}
+      name: frac_pump_failure_model
+      comment: "Calibrated LightGBM: P(failure mode within next 24 pumping hours) per pump. @champion is served."

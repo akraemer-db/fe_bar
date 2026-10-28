@@ -18,50 +18,34 @@ See `PROJECT_PLAN.md` for specs. Every item needs a text evidence artifact befor
 - [ ] User review of plan + deck v3.1 (in progress)
 - [ ] User sign-off, then start phase 1
 
-## Phase 1: Data
-- [ ] git init + first commit (user identity); commit at the end of every phase
-- [ ] **Lakebase smoke test (hard gate)**: synced table, OAuth write, UC catalog registration
-- [ ] Schema `frac_pump_pdm`, volume `raw_landing`
-- [ ] Synthetic generator (pumps, fleets, telemetry, stages, CMMS, techs, parts)
-- [ ] Hero pumps F07-P09, F07-P14, F03-P02 scripted + seeded miss and false alarm
-- [ ] Replay job
-- [ ] Evidence: row counts, label distribution
+## Phase 1: Bundle skeleton + data (1.0 hr)
+- [ ] Repo init + first commit (user identity); commit at the end of every phase
+- [ ] Platform bundle: schema, volume, experiment, registered model, Lakebase project + catalog, job `build_demo`
+- [ ] **Smoke test (hard gate):** bundle-deploy a postgres project + one synced table + a genie space, then destroy
+- [ ] Data gen notebook (hourly, 12 months, hero pumps, seeded miss and false alarm)
 
-## Phase 2: Pipeline + governance
-- [ ] SDP bronze/silver/gold with expectations
-- [ ] Comments, tags, mask, row filter, grants
-- [ ] Evidence: pipeline run, lineage, grants
+## Phase 2: Pipeline + governance (0.5 hr)
+- [ ] SDP: 2 bronze, 1 silver (expectations), 3 gold, with comments
+- [ ] Governance SQL task (mask, tags)
 
-## Phase 3: ML
-- [ ] Train + MLflow + UC registry @champion
-- [ ] Batch scoring + ranked actions
-- [ ] Serving endpoint
-- [ ] Evidence: metrics, $ captured, endpoint response
+## Phase 3: ML (0.75 hr)
+- [ ] Calendar baseline vs calibrated LightGBM in MLflow; register `@champion`
+- [ ] Batch score + `gold_ranked_actions` via `decide_action()`
 
-## Phase 4: Lakebase
-- [ ] Project, synced tables, native OLTP tables, seed data
-- [ ] Register as UC catalog
-- [ ] Evidence: psql output
+## Phase 4: Serve bundle (0.5 hr)
+- [ ] Synced tables, serving endpoint (`model_version` var), Genie space from `genie/space.json`
 
-## Phase 5: App
-- [ ] APX scaffold, pages 1-6
-- [ ] AI work order + MLflow tracing
-- [ ] Genie embed
-- [ ] Deploy + evidence (curl)
+## Phase 5: App (1.25 hr)
+- [ ] FastAPI routes first (curl), then React: Ranked Actions + drawer + Dispatch modal (AI work order), Timeline, Genie panel
+- [ ] App deployed by the serve bundle
 
-## Phase 6: Genie
-- [ ] Space, instructions, sample questions, benchmarks
-
-## Phase 7: Package
-- [ ] README master evidence map + DECISIONS.md (each <9k chars)
-- [ ] Move plan/research to docs/; deck <9k (speaker notes to docs/)
-- [ ] docs/roleplay_prep.md (business + technical persona Q&A)
-- [ ] check_evidence.sh: char budgets (<9k/file, <85k total) + notebook outputs
-- [ ] Name evidence paths in the submission decisions text box
-- [ ] E2E trace `scripts/trace_e2e.py` to `evidence/11_end_to_end_trace.txt`
-- [ ] Export notebooks with outputs, evidence index, README
-- [ ] Refresh deck numbers from the build
-- [ ] Repo scrub + push
+## Phase 6: Package (0.5 hr)
+- [ ] Makefile: up / down / redeploy / evidence
+- [ ] `collect_evidence.py` writes 8 evidence .md files; E2E trace
+- [ ] README (master evidence map) + DECISIONS.md, each <9k chars; plan/research to docs/; deck <9k
+- [ ] docs/roleplay_prep.md
+- [ ] Full down/up rehearsal from a clean slate
+- [ ] Scrub check + push to personal public repo; name evidence paths in the submission box
 
 ## Review
 (filled in at the end)

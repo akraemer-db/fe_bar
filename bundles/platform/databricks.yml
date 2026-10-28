@@ -1,0 +1,28 @@
+# Platform bundle: everything that can exist before data does.
+# Deploy order is wrapped by the repo Makefile (make up / make down).
+bundle:
+  name: frac_pump_platform
+
+include:
+  - resources/*.yml
+
+sync:
+  paths:
+    - ../../src
+    - ../../value_model
+
+variables:
+  catalog:
+    default: production_forecasting_catalog
+  schema:
+    default: frac_pump_pdm
+  warehouse_id:
+    default: 6f1ac903576b114a
+  lakebase_project:
+    default: frac-pump-pdm
+
+targets:
+  dev:
+    default: true
+    workspace:
+      profile: fe-vm-production-forecasting

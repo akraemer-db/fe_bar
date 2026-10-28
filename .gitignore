@@ -1,0 +1,8 @@
+.databricks/
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+.DS_Store
+.isaac/
+src/app/frontend/node_modules/

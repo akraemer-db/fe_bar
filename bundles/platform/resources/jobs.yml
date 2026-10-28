@@ -1,0 +1,32 @@
+resources:
+  jobs:
+    build_demo:
+      name: frac_pump_build_demo
+      description: "Generate synthetic data -> Lakeflow pipeline -> governance -> train + register -> batch score + ranked actions."
+      max_concurrent_runs: 1
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: schema
+          default: ${var.schema}
+      tasks:
+        - task_key: generate_data
+          notebook_task:
+            notebook_path: ../../../src/data_gen/generate_data.py
+        - task_key: pipeline
+          depends_on: [{task_key: generate_data}]
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.frac_pump_pipeline.id}
+            full_refresh: true
+        - task_key: governance
+          depends_on: [{task_key: pipeline}]
+          notebook_task:
+            notebook_path: ../../../src/governance/apply_governance.py
+        - task_key: train
+          depends_on: [{task_key: governance}]
+          notebook_task:
+            notebook_path: ../../../src/ml/train.py
+        - task_key: score
+          depends_on: [{task_key: train}]
+          notebook_task:
+            notebook_path: ../../../src/ml/score.py

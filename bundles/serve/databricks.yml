@@ -1,0 +1,34 @@
+# Serve bundle: everything that needs data or a model version to exist first.
+# Deployed by `make up` after the platform bundle's build_demo job has run.
+bundle:
+  name: frac_pump_serve
+
+include:
+  - resources/*.yml
+
+sync:
+  paths:
+    - ../../src/app/backend
+    - ../../genie
+
+variables:
+  catalog:
+    default: production_forecasting_catalog
+  schema:
+    default: frac_pump_pdm
+  warehouse_id:
+    default: 6f1ac903576b114a
+  lakebase_project:
+    default: frac-pump-pdm
+  llm_endpoint:
+    default: databricks-claude-sonnet-4-6
+  model_version:
+    description: UC model version behind @champion (resolved by make up)
+  experiment_id:
+    description: MLflow experiment id for app traces (resolved by make up)
+
+targets:
+  dev:
+    default: true
+    workspace:
+      profile: fe-vm-production-forecasting

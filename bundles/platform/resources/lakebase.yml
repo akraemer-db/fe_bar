@@ -1,0 +1,11 @@
+resources:
+  postgres_projects:
+    lakebase:
+      project_id: ${var.lakebase_project}
+      display_name: Frac pump reliability ops
+      pg_version: 17
+      purge_on_delete: true   # make down leaves nothing behind
+
+# No postgres_catalogs: this metastore doesn't grant CREATE CATALOG.
+# UC <-> Lakebase integration uses synced tables in the regular catalog (UC -> PG)
+# and Lakehouse Sync CDC into frac_pump_pdm (PG -> UC), both set up by the build job.

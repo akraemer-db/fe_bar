@@ -1,0 +1,18 @@
+command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+env:
+  - name: UC_CATALOG
+    value: production_forecasting_catalog
+  - name: UC_SCHEMA
+    value: frac_pump_pdm
+  - name: LAKEBASE_ENDPOINT
+    value: projects/frac-pump-pdm/branches/production/endpoints/primary
+  - name: LLM_ENDPOINT
+    value: databricks-claude-sonnet-4-6
+  - name: SERVING_ENDPOINT_NAME
+    valueFrom: scorer
+  - name: GENIE_SPACE_ID
+    valueFrom: genie
+  - name: DATABRICKS_WAREHOUSE_ID
+    valueFrom: warehouse
+  - name: MLFLOW_EXPERIMENT_ID
+    valueFrom: experiment

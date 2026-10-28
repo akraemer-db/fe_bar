@@ -1,0 +1,14 @@
+resources:
+  pipelines:
+    frac_pump_pipeline:
+      name: frac_pump_pipeline
+      catalog: ${var.catalog}
+      schema: ${resources.schemas.frac_pump_pdm.name}
+      serverless: true
+      channel: CURRENT
+      photon: true
+      configuration:
+        landing_root: /Volumes/${var.catalog}/${var.schema}/raw_landing
+      libraries:
+        - file:
+            path: ../../../src/pipeline/frac_pipeline.py

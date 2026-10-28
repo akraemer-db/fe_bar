@@ -1,0 +1,33 @@
+resources:
+  apps:
+    frac_reliability_center:
+      name: frac-reliability-center
+      description: "Fleet Reliability Command Center: ranked pump actions by $, dispatch, timeline, AI work orders, Genie."
+      source_code_path: ../../../src/app/backend
+      resources:
+        - name: warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+        - name: scorer
+          serving_endpoint:
+            name: ${resources.model_serving_endpoints.scorer.name}
+            permission: CAN_QUERY
+        - name: llm
+          serving_endpoint:
+            name: ${var.llm_endpoint}
+            permission: CAN_QUERY
+        - name: genie
+          genie_space:
+            name: reliability
+            space_id: ${resources.genie_spaces.reliability.id}
+            permission: CAN_RUN
+        - name: experiment
+          experiment:
+            experiment_id: ${var.experiment_id}
+            permission: CAN_EDIT
+        - name: postgres
+          postgres:
+            branch: projects/${var.lakebase_project}/branches/production
+            database: projects/${var.lakebase_project}/branches/production/databases/databricks-postgres
+            permission: CAN_CONNECT_AND_CREATE

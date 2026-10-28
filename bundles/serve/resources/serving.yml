@@ -1,0 +1,22 @@
+resources:
+  model_serving_endpoints:
+    scorer:
+      name: frac-pump-failure-scorer
+      description: "frac_pump_failure_model (champion version) for live re-scoring from the app."
+      config:
+        served_entities:
+          - name: champion
+            entity_name: ${var.catalog}.${var.schema}.frac_pump_failure_model
+            entity_version: ${var.model_version}
+            workload_size: Small
+            scale_to_zero_enabled: true
+      tags:
+        - key: demo
+          value: frac_pump_pdm
+
+  genie_spaces:
+    reliability:
+      title: Frac pump reliability (Mesa Ridge, synthetic)
+      description: "Ask about pump failures, NPT, MTBF, ranked actions, and dispatched work orders. Fictional company, synthetic data."
+      warehouse_id: ${var.warehouse_id}
+      file_path: ../../../genie/space.json

@@ -1,0 +1,38 @@
+# Unity Catalog -> Lakebase: snapshot-synced read models for the app (small tables, refreshed by make up).
+resources:
+  postgres_synced_tables:
+    lb_ranked_actions:
+      synced_table_id: ${var.catalog}.${var.schema}.lb_ranked_actions
+      source_table_full_name: ${var.catalog}.${var.schema}.gold_ranked_actions
+      primary_key_columns: [pump_id]
+      scheduling_policy: SNAPSHOT
+      branch: projects/${var.lakebase_project}/branches/production
+      postgres_database: databricks_postgres
+      create_database_objects_if_missing: true
+      new_pipeline_spec:
+        storage_catalog: ${var.catalog}
+        storage_schema: ${var.schema}
+
+    lb_technicians:
+      synced_table_id: ${var.catalog}.${var.schema}.lb_technicians
+      source_table_full_name: ${var.catalog}.${var.schema}.dim_technicians
+      primary_key_columns: [tech_id]
+      scheduling_policy: SNAPSHOT
+      branch: projects/${var.lakebase_project}/branches/production
+      postgres_database: databricks_postgres
+      create_database_objects_if_missing: true
+      new_pipeline_spec:
+        storage_catalog: ${var.catalog}
+        storage_schema: ${var.schema}
+
+    lb_stage_schedule:
+      synced_table_id: ${var.catalog}.${var.schema}.lb_stage_schedule
+      source_table_full_name: ${var.catalog}.${var.schema}.dim_stage_schedule
+      primary_key_columns: [fleet_id, stage_no]
+      scheduling_policy: SNAPSHOT
+      branch: projects/${var.lakebase_project}/branches/production
+      postgres_database: databricks_postgres
+      create_database_objects_if_missing: true
+      new_pipeline_spec:
+        storage_catalog: ${var.catalog}
+        storage_schema: ${var.schema}

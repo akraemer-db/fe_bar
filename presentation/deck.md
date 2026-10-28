@@ -1,6 +1,6 @@
 # Fleet Reliability Command Center
 ### Fix the right frac pump in the next stage gap
-Mesa Ridge Pressure Pumping (fictional company, synthetic data) x Databricks | Deck v3.1. Numbers come from `value_model/value_model_output.txt` and refresh from the build.
+Mesa Ridge Pressure Pumping (fictional company, synthetic data) x Databricks | Deck v3.1. Numbers come from `value_model/value_model_output.md` and refresh from the build.
 
 ---
 
