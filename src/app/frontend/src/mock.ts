@@ -1,6 +1,7 @@
 // Mock backend for `npm run dev:mock` (VITE_MOCK=1). Mirrors the API contract in types.ts.
 // Keeps an in-memory work order store so dispatch and status changes show up in the UI.
 import { parseLocal, toIsoLocal } from "./format";
+import performanceSample from "./performance.sample.json";
 import type {
   Action,
   FailureMode,
@@ -517,6 +518,9 @@ export async function mockRequest<T>(method: string, path: string, body?: unknow
     return out(health);
   }
   if (method === "GET" && p === "/api/summary") return out(buildSummary());
+  if (method === "GET" && p === "/api/performance") {
+    return out(performanceSample as unknown as Performance);
+  }
   if (method === "POST" && p === "/api/demo/reset") return out({ deleted_work_orders: 0 });
   if (method === "GET" && p === "/api/actions") return out(buildActions());
 

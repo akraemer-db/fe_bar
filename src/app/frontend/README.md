@@ -1,7 +1,7 @@
 # Fleet Reliability Command Center (frontend)
 
 React 18 + Vite + TypeScript single-page app for the Mesa Ridge Pressure Pumping demo (synthetic data).
-Two views: **Ranked Actions** (hero, dispatch flow, pump drawer) and **Timeline** (technician Gantt and recent work orders), plus a collapsible **Ask Genie** panel.
+Three views: **Ranked Actions** (hero, dispatch flow, pump drawer), **Timeline** (technician Gantt and recent work orders), and **Performance** (opportunity and performance charts from `GET /api/performance`), plus a collapsible **Ask Genie** panel.
 
 ## Run
 
@@ -33,6 +33,7 @@ Runs `tsc --noEmit`, then writes the production bundle to `../backend/static` (`
 - `src/components/ActionDrawer.tsx`: drivers, options, trend sparklines, re-score.
 - `src/components/DispatchModal.tsx`: two-step dispatch (AI draft, then technician and window).
 - `src/components/TimelineView.tsx`: Gantt with stage-gap bands, status popover, recent work orders.
+- `src/components/PerformanceView.tsx` and `performanceCharts.tsx`: Performance tab (recharts, dataviz palette, table view under each chart). Mock data comes from `src/performance.sample.json`.
 - `src/components/GeniePanel.tsx`: Genie chat with SQL and result table (max 20 rows).
 - `src/markdown.tsx`: small markdown renderer for drafts (headings, lists, bold, code). No `innerHTML`.
 

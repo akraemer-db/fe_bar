@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { IS_MOCK, api, errMsg } from "./api";
 import { ActionsView } from "./components/ActionsView";
 import { GeniePanel } from "./components/GeniePanel";
+import { PerformanceView } from "./components/PerformanceView";
 import { TimelineView } from "./components/TimelineView";
 import { useToast } from "./toast";
 import type { Health } from "./types";
 
-type View = "actions" | "timeline";
+type View = "actions" | "timeline" | "performance";
 
 const TABS: { id: View; label: string }[] = [
   { id: "actions", label: "Ranked Actions" },
   { id: "timeline", label: "Timeline" },
+  { id: "performance", label: "Performance" },
 ];
 
 export function App() {
@@ -83,7 +85,11 @@ export function App() {
       {IS_MOCK && <div className="mock-banner">Mock data mode (VITE_MOCK=1). Responses come from src/mock.ts.</div>}
 
       <div className={`shell ${genieOpen ? "shell-genie" : ""}`}>
-        <main className="content">{view === "actions" ? <ActionsView /> : <TimelineView />}</main>
+        <main className="content">
+          {view === "actions" && <ActionsView />}
+          {view === "timeline" && <TimelineView />}
+          {view === "performance" && <PerformanceView />}
+        </main>
         {genieOpen && (
           <aside className="genie-col">
             <GeniePanel onClose={() => setGenieOpen(false)} />

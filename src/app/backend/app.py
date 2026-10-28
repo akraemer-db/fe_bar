@@ -311,6 +311,76 @@ def timeline(hours: int = 48):
             "stage_gaps": [clean(g) for g in gaps]}
 
 
+_perf_cache = {"at": 0.0, "uc": None}
+
+
+def _uc_performance():
+    """Analytical reads from UC gold tables; cached because they only change when the build job reruns."""
+    if _perf_cache["uc"] and time.time() - _perf_cache["at"] < 300:
+        return _perf_cache["uc"]
+    weekly = wh(f"""SELECT date_trunc('week', day) AS week_start, round(sum(pump_caused_npt_hrs), 1) AS pump_caused_npt_hrs,
+                    sum(unplanned_failures) AS unplanned_failures, sum(pump_hours) AS pump_hours
+                    FROM {FQ}.gold_fleet_kpis_daily GROUP BY 1 ORDER BY 1""")
+    fleet = wh(f"""SELECT fleet_id, round(sum(pump_caused_npt_hrs), 1) AS npt_hrs_90d, sum(unplanned_failures) AS failures_90d
+                   FROM {FQ}.gold_fleet_kpis_daily
+                   WHERE day >= (SELECT max(day) FROM {FQ}.gold_fleet_kpis_daily) - INTERVAL 90 DAYS
+                   GROUP BY fleet_id ORDER BY fleet_id""")
+    modes = wh(f"""SELECT m.failure_mode, count(*) AS failures_12m, c.cost_if_failed AS cost_if_failed_usd,
+                          c.planned_fix AS planned_fix_usd, count(*) * c.cost_if_failed AS annual_cost_usd,
+                          round((SELECT sum(pump_hours) FROM {FQ}.gold_fleet_kpis_daily) / count(*), 0) AS mtbf_pumping_hrs
+                   FROM {FQ}.silver_maintenance m JOIN {FQ}.mode_costs c ON c.failure_mode = m.failure_mode
+                   WHERE m.event_type = 'unplanned_failure' GROUP BY m.failure_mode, c.cost_if_failed, c.planned_fix
+                   ORDER BY annual_cost_usd DESC""")
+    levers = wh(f"SELECT scenario, lever, annual_usd, proven_in FROM {FQ}.value_model_levers")
+    comp = {r["metric"]: r for r in wh(f"SELECT * FROM {FQ}.ml_model_comparison")}
+    num = lambda run, k: float(comp[k][run]) if k in comp else None
+    model = {run: {k: num(run, k) for k in ["recall", "precision", "false_alarms_per_pump_month", "median_lead_hrs",
+                                           "net_usd_annualized", "events", "caught", "false_alarms", "threshold"]}
+             for run in ["lightgbm_calibrated", "calendar_baseline"]}
+    by_mode = [{"failure_mode": m, "recall": num("lightgbm_calibrated", f"recall_{m}"), "n": num("lightgbm_calibrated", f"n_{m}")}
+               for m in MODE_LABEL]
+    _perf_cache.update(at=time.time(), uc={
+        "weekly": [clean(r) for r in weekly], "fleet": [clean(r) for r in fleet], "by_mode_cost": [clean(r) for r in modes],
+        "levers": [clean(r) for r in levers], "model": model, "model_recall_by_mode": by_mode})
+    return _perf_cache["uc"]
+
+
+@app.on_event("startup")
+def warm_performance_cache():
+    # first warehouse queries can be slow on a cold warehouse; warm them so the Performance tab opens instantly
+    import threading
+    threading.Thread(target=lambda: _uc_performance(), daemon=True).start()
+
+
+@app.get("/api/performance")
+def performance():
+    t = as_of()
+    uc = _uc_performance()
+    with pg() as c:
+        at_stake = {r["fleet_id"]: float(r["usd"]) for r in c.execute(
+            f"SELECT fleet_id, sum(expected_savings_usd) AS usd FROM {SYNC}.lb_ranked_actions GROUP BY fleet_id").fetchall()}
+        prot = {r["fleet_id"]: float(r["usd"]) for r in c.execute(
+            "SELECT fleet_id, sum(expected_savings_usd) AS usd FROM ops.work_orders WHERE created_at >= %s GROUP BY fleet_id",
+            (t - timedelta(days=30),)).fetchall()}
+        daily = c.execute("""SELECT date(created_at) AS day, count(*) AS work_orders, sum(expected_savings_usd) AS expected_usd
+                             FROM ops.work_orders WHERE created_at >= %s GROUP BY 1 ORDER BY 1""", (t - timedelta(days=30),)).fetchall()
+        status = c.execute("SELECT status, count(*) AS n, sum(expected_savings_usd) AS expected_usd FROM ops.work_orders "
+                           "GROUP BY status ORDER BY status").fetchall()
+        outcomes = c.execute("""SELECT count(*) FILTER (WHERE status = 'done') AS completed,
+                                       count(*) FILTER (WHERE finding_confirmed) AS confirmed,
+                                       count(*) FILTER (WHERE failure_avoided) AS avoided FROM ops.work_orders""").fetchone()
+    cum, protected_daily = 0.0, []
+    for r in daily:
+        cum += float(r["expected_usd"] or 0)
+        protected_daily.append({"day": r["day"].isoformat(), "work_orders": r["work_orders"],
+                                "expected_usd": float(r["expected_usd"] or 0), "cumulative_usd": cum})
+    fleet = [{**f, "expected_usd_at_stake": at_stake.get(f["fleet_id"], 0.0), "protected_30d_usd": prot.get(f["fleet_id"], 0.0)}
+             for f in uc["fleet"]]
+    return {"as_of": iso(t), **{k: v for k, v in uc.items() if k != "fleet"}, "fleet": fleet,
+            "protected_daily": protected_daily, "work_order_status": [clean(r) for r in status],
+            "outcomes": dict(outcomes), "note": "Synthetic data; work orders include seeded history (is_synthetic_seed)."}
+
+
 @app.post("/api/demo/reset")
 def reset_demo():
     """Remove work orders created during the demo; seeded history stays. Deletes also stream to UC via Lakehouse Sync."""

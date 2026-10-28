@@ -166,3 +166,80 @@ export interface GenieResponse {
   columns: string[];
   rows: unknown[][];
 }
+
+// GET /api/performance (see performance.sample.json for a live example)
+export interface PerfWeek {
+  week_start: string;
+  pump_caused_npt_hrs: number;
+  unplanned_failures: number;
+  pump_hours: number;
+}
+
+export interface PerfModeCost {
+  failure_mode: FailureMode;
+  failures_12m: number;
+  cost_if_failed_usd: number;
+  planned_fix_usd: number;
+  annual_cost_usd: number;
+  mtbf_pumping_hrs: number;
+}
+
+export interface PerfLever {
+  scenario: "conservative" | "target";
+  lever: string;
+  annual_usd: number;
+  proven_in: string; // "" on the Program total row
+}
+
+export interface PerfModelStats {
+  recall: number;
+  precision: number;
+  false_alarms_per_pump_month: number;
+  median_lead_hrs: number;
+  net_usd_annualized: number;
+  events: number;
+  caught: number;
+  false_alarms: number;
+  threshold: number;
+}
+
+export interface PerfModeRecall {
+  failure_mode: FailureMode;
+  recall: number;
+  n: number;
+}
+
+export interface PerfFleet {
+  fleet_id: string;
+  npt_hrs_90d: number;
+  failures_90d: number;
+  expected_usd_at_stake: number;
+  protected_30d_usd: number;
+}
+
+export interface PerfDay {
+  day: string;
+  work_orders: number;
+  expected_usd: number;
+  cumulative_usd: number;
+}
+
+export interface PerfStatus {
+  status: WorkOrderStatus;
+  n: number;
+  expected_usd: number;
+}
+
+export interface Performance {
+  as_of: string;
+  weekly: PerfWeek[];
+  by_mode_cost: PerfModeCost[];
+  levers: PerfLever[];
+  model: { lightgbm_calibrated: PerfModelStats; calendar_baseline: PerfModelStats };
+  model_recall_by_mode: PerfModeRecall[];
+  fleet: PerfFleet[];
+  protected_daily: PerfDay[];
+  work_order_status: PerfStatus[];
+  outcomes: { completed: number; confirmed: number; avoided: number };
+  note: string;
+}

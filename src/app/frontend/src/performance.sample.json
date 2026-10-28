@@ -1,0 +1,667 @@
+{
+    "as_of": "2026-10-28T11:00:00",
+    "weekly": [
+        {
+            "week_start": "2025-10-27T00:00:00",
+            "pump_caused_npt_hrs": 2.5,
+            "unplanned_failures": 1,
+            "pump_hours": 27257
+        },
+        {
+            "week_start": "2025-11-03T00:00:00",
+            "pump_caused_npt_hrs": 7.0,
+            "unplanned_failures": 6,
+            "pump_hours": 27936
+        },
+        {
+            "week_start": "2025-11-10T00:00:00",
+            "pump_caused_npt_hrs": 7.0,
+            "unplanned_failures": 4,
+            "pump_hours": 32655
+        },
+        {
+            "week_start": "2025-11-17T00:00:00",
+            "pump_caused_npt_hrs": 0.0,
+            "unplanned_failures": 5,
+            "pump_hours": 29413
+        },
+        {
+            "week_start": "2025-11-24T00:00:00",
+            "pump_caused_npt_hrs": 15.5,
+            "unplanned_failures": 8,
+            "pump_hours": 30577
+        },
+        {
+            "week_start": "2025-12-01T00:00:00",
+            "pump_caused_npt_hrs": 13.0,
+            "unplanned_failures": 8,
+            "pump_hours": 27277
+        },
+        {
+            "week_start": "2025-12-08T00:00:00",
+            "pump_caused_npt_hrs": 4.5,
+            "unplanned_failures": 4,
+            "pump_hours": 29713
+        },
+        {
+            "week_start": "2025-12-15T00:00:00",
+            "pump_caused_npt_hrs": 6.0,
+            "unplanned_failures": 3,
+            "pump_hours": 23359
+        },
+        {
+            "week_start": "2025-12-22T00:00:00",
+            "pump_caused_npt_hrs": 8.5,
+            "unplanned_failures": 5,
+            "pump_hours": 31771
+        },
+        {
+            "week_start": "2025-12-29T00:00:00",
+            "pump_caused_npt_hrs": 6.0,
+            "unplanned_failures": 3,
+            "pump_hours": 31396
+        },
+        {
+            "week_start": "2026-01-05T00:00:00",
+            "pump_caused_npt_hrs": 0.0,
+            "unplanned_failures": 5,
+            "pump_hours": 26133
+        },
+        {
+            "week_start": "2026-01-12T00:00:00",
+            "pump_caused_npt_hrs": 13.5,
+            "unplanned_failures": 8,
+            "pump_hours": 32815
+        },
+        {
+            "week_start": "2026-01-19T00:00:00",
+            "pump_caused_npt_hrs": 6.0,
+            "unplanned_failures": 6,
+            "pump_hours": 26618
+        },
+        {
+            "week_start": "2026-01-26T00:00:00",
+            "pump_caused_npt_hrs": 10.5,
+            "unplanned_failures": 5,
+            "pump_hours": 26576
+        },
+        {
+            "week_start": "2026-02-02T00:00:00",
+            "pump_caused_npt_hrs": 10.0,
+            "unplanned_failures": 5,
+            "pump_hours": 31056
+        },
+        {
+            "week_start": "2026-02-09T00:00:00",
+            "pump_caused_npt_hrs": 12.5,
+            "unplanned_failures": 5,
+            "pump_hours": 31594
+        },
+        {
+            "week_start": "2026-02-16T00:00:00",
+            "pump_caused_npt_hrs": 8.5,
+            "unplanned_failures": 5,
+            "pump_hours": 29577
+        },
+        {
+            "week_start": "2026-02-23T00:00:00",
+            "pump_caused_npt_hrs": 8.5,
+            "unplanned_failures": 5,
+            "pump_hours": 27877
+        },
+        {
+            "week_start": "2026-03-02T00:00:00",
+            "pump_caused_npt_hrs": 16.0,
+            "unplanned_failures": 8,
+            "pump_hours": 31237
+        },
+        {
+            "week_start": "2026-03-09T00:00:00",
+            "pump_caused_npt_hrs": 9.0,
+            "unplanned_failures": 5,
+            "pump_hours": 28098
+        },
+        {
+            "week_start": "2026-03-16T00:00:00",
+            "pump_caused_npt_hrs": 0.0,
+            "unplanned_failures": 4,
+            "pump_hours": 28596
+        },
+        {
+            "week_start": "2026-03-23T00:00:00",
+            "pump_caused_npt_hrs": 6.5,
+            "unplanned_failures": 5,
+            "pump_hours": 35036
+        },
+        {
+            "week_start": "2026-03-30T00:00:00",
+            "pump_caused_npt_hrs": 5.0,
+            "unplanned_failures": 5,
+            "pump_hours": 27553
+        },
+        {
+            "week_start": "2026-04-06T00:00:00",
+            "pump_caused_npt_hrs": 8.0,
+            "unplanned_failures": 6,
+            "pump_hours": 28675
+        },
+        {
+            "week_start": "2026-04-13T00:00:00",
+            "pump_caused_npt_hrs": 7.0,
+            "unplanned_failures": 6,
+            "pump_hours": 30790
+        },
+        {
+            "week_start": "2026-04-20T00:00:00",
+            "pump_caused_npt_hrs": 6.5,
+            "unplanned_failures": 4,
+            "pump_hours": 29912
+        },
+        {
+            "week_start": "2026-04-27T00:00:00",
+            "pump_caused_npt_hrs": 10.0,
+            "unplanned_failures": 6,
+            "pump_hours": 28173
+        },
+        {
+            "week_start": "2026-05-04T00:00:00",
+            "pump_caused_npt_hrs": 2.5,
+            "unplanned_failures": 5,
+            "pump_hours": 30814
+        },
+        {
+            "week_start": "2026-05-11T00:00:00",
+            "pump_caused_npt_hrs": 8.5,
+            "unplanned_failures": 5,
+            "pump_hours": 27655
+        },
+        {
+            "week_start": "2026-05-18T00:00:00",
+            "pump_caused_npt_hrs": 5.0,
+            "unplanned_failures": 8,
+            "pump_hours": 30597
+        },
+        {
+            "week_start": "2026-05-25T00:00:00",
+            "pump_caused_npt_hrs": 9.0,
+            "unplanned_failures": 7,
+            "pump_hours": 31756
+        },
+        {
+            "week_start": "2026-06-01T00:00:00",
+            "pump_caused_npt_hrs": 12.0,
+            "unplanned_failures": 5,
+            "pump_hours": 26375
+        },
+        {
+            "week_start": "2026-06-08T00:00:00",
+            "pump_caused_npt_hrs": 14.0,
+            "unplanned_failures": 8,
+            "pump_hours": 33578
+        },
+        {
+            "week_start": "2026-06-15T00:00:00",
+            "pump_caused_npt_hrs": 8.5,
+            "unplanned_failures": 3,
+            "pump_hours": 29434
+        },
+        {
+            "week_start": "2026-06-22T00:00:00",
+            "pump_caused_npt_hrs": 13.0,
+            "unplanned_failures": 7,
+            "pump_hours": 32436
+        },
+        {
+            "week_start": "2026-06-29T00:00:00",
+            "pump_caused_npt_hrs": 10.0,
+            "unplanned_failures": 6,
+            "pump_hours": 26814
+        },
+        {
+            "week_start": "2026-07-06T00:00:00",
+            "pump_caused_npt_hrs": 2.5,
+            "unplanned_failures": 6,
+            "pump_hours": 34271
+        },
+        {
+            "week_start": "2026-07-13T00:00:00",
+            "pump_caused_npt_hrs": 7.0,
+            "unplanned_failures": 6,
+            "pump_hours": 30375
+        },
+        {
+            "week_start": "2026-07-20T00:00:00",
+            "pump_caused_npt_hrs": 7.0,
+            "unplanned_failures": 6,
+            "pump_hours": 28137
+        },
+        {
+            "week_start": "2026-07-27T00:00:00",
+            "pump_caused_npt_hrs": 15.0,
+            "unplanned_failures": 6,
+            "pump_hours": 33075
+        },
+        {
+            "week_start": "2026-08-03T00:00:00",
+            "pump_caused_npt_hrs": 0.0,
+            "unplanned_failures": 0,
+            "pump_hours": 24715
+        },
+        {
+            "week_start": "2026-08-10T00:00:00",
+            "pump_caused_npt_hrs": 6.0,
+            "unplanned_failures": 7,
+            "pump_hours": 33875
+        },
+        {
+            "week_start": "2026-08-17T00:00:00",
+            "pump_caused_npt_hrs": 7.5,
+            "unplanned_failures": 3,
+            "pump_hours": 26958
+        },
+        {
+            "week_start": "2026-08-24T00:00:00",
+            "pump_caused_npt_hrs": 7.5,
+            "unplanned_failures": 3,
+            "pump_hours": 31856
+        },
+        {
+            "week_start": "2026-08-31T00:00:00",
+            "pump_caused_npt_hrs": 5.0,
+            "unplanned_failures": 6,
+            "pump_hours": 29557
+        },
+        {
+            "week_start": "2026-09-07T00:00:00",
+            "pump_caused_npt_hrs": 8.5,
+            "unplanned_failures": 9,
+            "pump_hours": 30898
+        },
+        {
+            "week_start": "2026-09-14T00:00:00",
+            "pump_caused_npt_hrs": 5.0,
+            "unplanned_failures": 8,
+            "pump_hours": 27255
+        },
+        {
+            "week_start": "2026-09-21T00:00:00",
+            "pump_caused_npt_hrs": 4.0,
+            "unplanned_failures": 5,
+            "pump_hours": 28675
+        },
+        {
+            "week_start": "2026-09-28T00:00:00",
+            "pump_caused_npt_hrs": 9.0,
+            "unplanned_failures": 6,
+            "pump_hours": 27457
+        },
+        {
+            "week_start": "2026-10-05T00:00:00",
+            "pump_caused_npt_hrs": 7.0,
+            "unplanned_failures": 3,
+            "pump_hours": 33394
+        },
+        {
+            "week_start": "2026-10-12T00:00:00",
+            "pump_caused_npt_hrs": 4.0,
+            "unplanned_failures": 4,
+            "pump_hours": 26877
+        },
+        {
+            "week_start": "2026-10-19T00:00:00",
+            "pump_caused_npt_hrs": 13.5,
+            "unplanned_failures": 7,
+            "pump_hours": 31792
+        },
+        {
+            "week_start": "2026-10-26T00:00:00",
+            "pump_caused_npt_hrs": 0.0,
+            "unplanned_failures": 0,
+            "pump_hours": 11734
+        }
+    ],
+    "by_mode_cost": [
+        {
+            "failure_mode": "valve_seat_washout",
+            "failures_12m": 152,
+            "cost_if_failed_usd": 38557,
+            "planned_fix_usd": 5000,
+            "annual_cost_usd": 5860664,
+            "mtbf_pumping_hrs": 10211.0
+        },
+        {
+            "failure_mode": "power_end_bearing",
+            "failures_12m": 45,
+            "cost_if_failed_usd": 85292,
+            "planned_fix_usd": 10000,
+            "annual_cost_usd": 3838140,
+            "mtbf_pumping_hrs": 34490.0
+        },
+        {
+            "failure_mode": "packing_failure",
+            "failures_12m": 82,
+            "cost_if_failed_usd": 26646,
+            "planned_fix_usd": 3000,
+            "annual_cost_usd": 2184972,
+            "mtbf_pumping_hrs": 18927.0
+        }
+    ],
+    "levers": [
+        {
+            "scenario": "conservative",
+            "lever": "Failures caught early (ML)",
+            "annual_usd": 1730641.4794921875,
+            "proven_in": "POC backtest"
+        },
+        {
+            "scenario": "conservative",
+            "lever": "Fluid end life +10%",
+            "annual_usd": 5539772.727272728,
+            "proven_in": "Pilot"
+        },
+        {
+            "scenario": "conservative",
+            "lever": "Condition-based consumables -10%",
+            "annual_usd": 1800000.0,
+            "proven_in": "Pilot"
+        },
+        {
+            "scenario": "conservative",
+            "lever": "Program total",
+            "annual_usd": 9070414.206764916,
+            "proven_in": ""
+        },
+        {
+            "scenario": "target",
+            "lever": "Failures caught early (ML)",
+            "annual_usd": 3582354.387555803,
+            "proven_in": "POC backtest"
+        },
+        {
+            "scenario": "target",
+            "lever": "Fluid end life +10%",
+            "annual_usd": 5539772.727272728,
+            "proven_in": "Pilot"
+        },
+        {
+            "scenario": "target",
+            "lever": "Condition-based consumables -10%",
+            "annual_usd": 1800000.0,
+            "proven_in": "Pilot"
+        },
+        {
+            "scenario": "target",
+            "lever": "Program total",
+            "annual_usd": 10922127.11482853,
+            "proven_in": ""
+        }
+    ],
+    "model": {
+        "lightgbm_calibrated": {
+            "recall": 0.8787878787878788,
+            "precision": 0.5420560747663551,
+            "false_alarms_per_pump_month": 0.05397101449275361,
+            "median_lead_hrs": 5.0,
+            "net_usd_annualized": 8380618.206521739,
+            "events": 66.0,
+            "caught": 58.0,
+            "false_alarms": 49.0,
+            "threshold": 0.85
+        },
+        "calendar_baseline": {
+            "recall": 0.0,
+            "precision": 0.0,
+            "false_alarms_per_pump_month": 0.0,
+            "median_lead_hrs": 0.0,
+            "net_usd_annualized": 0.0,
+            "events": 66.0,
+            "caught": 0.0,
+            "false_alarms": 0.0,
+            "threshold": 0.5
+        }
+    },
+    "model_recall_by_mode": [
+        {
+            "failure_mode": "valve_seat_washout",
+            "recall": 0.8205128205128205,
+            "n": 39.0
+        },
+        {
+            "failure_mode": "packing_failure",
+            "recall": 1.0,
+            "n": 14.0
+        },
+        {
+            "failure_mode": "power_end_bearing",
+            "recall": 0.9230769230769231,
+            "n": 13.0
+        }
+    ],
+    "fleet": [
+        {
+            "fleet_id": "F01",
+            "npt_hrs_90d": 15.5,
+            "failures_90d": 7,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 31650.0
+        },
+        {
+            "fleet_id": "F02",
+            "npt_hrs_90d": 4.5,
+            "failures_90d": 4,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 84050.0
+        },
+        {
+            "fleet_id": "F03",
+            "npt_hrs_90d": 2.5,
+            "failures_90d": 3,
+            "expected_usd_at_stake": 19519.0,
+            "protected_30d_usd": 98100.0
+        },
+        {
+            "fleet_id": "F04",
+            "npt_hrs_90d": 0.0,
+            "failures_90d": 2,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 63050.0
+        },
+        {
+            "fleet_id": "F05",
+            "npt_hrs_90d": 11.5,
+            "failures_90d": 6,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 34400.0
+        },
+        {
+            "fleet_id": "F06",
+            "npt_hrs_90d": 2.5,
+            "failures_90d": 3,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 0.0
+        },
+        {
+            "fleet_id": "F07",
+            "npt_hrs_90d": 2.0,
+            "failures_90d": 5,
+            "expected_usd_at_stake": 100320.0,
+            "protected_30d_usd": 85100.0
+        },
+        {
+            "fleet_id": "F08",
+            "npt_hrs_90d": 14.5,
+            "failures_90d": 8,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 41050.0
+        },
+        {
+            "fleet_id": "F09",
+            "npt_hrs_90d": 4.0,
+            "failures_90d": 4,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 100250.0
+        },
+        {
+            "fleet_id": "F10",
+            "npt_hrs_90d": 0.0,
+            "failures_90d": 1,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 135800.0
+        },
+        {
+            "fleet_id": "F11",
+            "npt_hrs_90d": 8.5,
+            "failures_90d": 6,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 87750.0
+        },
+        {
+            "fleet_id": "F12",
+            "npt_hrs_90d": 5.0,
+            "failures_90d": 3,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 39050.0
+        },
+        {
+            "fleet_id": "F13",
+            "npt_hrs_90d": 2.0,
+            "failures_90d": 3,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 61700.0
+        },
+        {
+            "fleet_id": "F14",
+            "npt_hrs_90d": 4.5,
+            "failures_90d": 6,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 40150.0
+        },
+        {
+            "fleet_id": "F15",
+            "npt_hrs_90d": 6.5,
+            "failures_90d": 3,
+            "expected_usd_at_stake": 0.0,
+            "protected_30d_usd": 41700.0
+        }
+    ],
+    "protected_daily": [
+        {
+            "day": "2026-09-30",
+            "work_orders": 1,
+            "expected_usd": 12000.0,
+            "cumulative_usd": 12000.0
+        },
+        {
+            "day": "2026-10-01",
+            "work_orders": 2,
+            "expected_usd": 66500.0,
+            "cumulative_usd": 78500.0
+        },
+        {
+            "day": "2026-10-03",
+            "work_orders": 2,
+            "expected_usd": 49650.0,
+            "cumulative_usd": 128150.0
+        },
+        {
+            "day": "2026-10-05",
+            "work_orders": 1,
+            "expected_usd": 23850.0,
+            "cumulative_usd": 152000.0
+        },
+        {
+            "day": "2026-10-07",
+            "work_orders": 1,
+            "expected_usd": 26500.0,
+            "cumulative_usd": 178500.0
+        },
+        {
+            "day": "2026-10-10",
+            "work_orders": 1,
+            "expected_usd": 14900.0,
+            "cumulative_usd": 193400.0
+        },
+        {
+            "day": "2026-10-13",
+            "work_orders": 2,
+            "expected_usd": 51400.0,
+            "cumulative_usd": 244800.0
+        },
+        {
+            "day": "2026-10-15",
+            "work_orders": 1,
+            "expected_usd": 16050.0,
+            "cumulative_usd": 260850.0
+        },
+        {
+            "day": "2026-10-18",
+            "work_orders": 1,
+            "expected_usd": 28450.0,
+            "cumulative_usd": 289300.0
+        },
+        {
+            "day": "2026-10-20",
+            "work_orders": 1,
+            "expected_usd": 16400.0,
+            "cumulative_usd": 305700.0
+        },
+        {
+            "day": "2026-10-21",
+            "work_orders": 2,
+            "expected_usd": 50250.0,
+            "cumulative_usd": 355950.0
+        },
+        {
+            "day": "2026-10-24",
+            "work_orders": 2,
+            "expected_usd": 44550.0,
+            "cumulative_usd": 400500.0
+        },
+        {
+            "day": "2026-10-25",
+            "work_orders": 2,
+            "expected_usd": 48800.0,
+            "cumulative_usd": 449300.0
+        },
+        {
+            "day": "2026-10-26",
+            "work_orders": 1,
+            "expected_usd": 31650.0,
+            "cumulative_usd": 480950.0
+        },
+        {
+            "day": "2026-10-28",
+            "work_orders": 14,
+            "expected_usd": 462850.0,
+            "cumulative_usd": 943800.0
+        }
+    ],
+    "work_order_status": [
+        {
+            "status": "dispatched",
+            "n": 4,
+            "expected_usd": 200200.0
+        },
+        {
+            "status": "done",
+            "n": 20,
+            "expected_usd": 480950.0
+        },
+        {
+            "status": "in_progress",
+            "n": 2,
+            "expected_usd": 19600.0
+        },
+        {
+            "status": "scheduled",
+            "n": 8,
+            "expected_usd": 243050.0
+        }
+    ],
+    "outcomes": {
+        "completed": 20,
+        "confirmed": 19,
+        "avoided": 17
+    },
+    "note": "Synthetic data; work orders include seeded history (is_synthetic_seed)."
+}

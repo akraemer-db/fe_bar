@@ -114,4 +114,14 @@ va = pd.read_csv("../../value_model/value_assumptions.csv")
 mc = pd.read_csv("../../value_model/mode_costs.csv")
 spark.createDataFrame(va.astype({"value": float})).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{FQ}.value_assumptions")
 spark.createDataFrame(mc.fillna({"event_mix": 0})).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{FQ}.mode_costs")
+levers = []
+for scen in ("conservative", "target"):
+    r = vm.run(scen)
+    for lever, key, proven in [("Failures caught early (ML)", "lever1_ml", "POC backtest"),
+                               ("Fluid end life +10%", "lever2_fe_life", "Pilot"),
+                               ("Condition-based consumables -10%", "lever3_consumables", "Pilot")]:
+        levers.append({"scenario": scen, "lever": lever, "annual_usd": float(r[key]), "proven_in": proven})
+    levers.append({"scenario": scen, "lever": "Program total", "annual_usd": float(r["program_total"]), "proven_in": ""})
+spark.createDataFrame(pd.DataFrame(levers)).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{FQ}.value_model_levers")
 display(spark.table(f"{FQ}.mode_costs"))
+display(spark.table(f"{FQ}.value_model_levers"))

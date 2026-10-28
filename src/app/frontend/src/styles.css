@@ -1326,3 +1326,212 @@ tr:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ---------- Performance tab ---------- */
+
+.perf {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.perf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.perf-h2 {
+  font-size: 20px;
+  margin: 0 0 2px;
+}
+
+.perf-section {
+  margin-top: 8px;
+}
+
+.perf-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.perf-tile {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+}
+
+.perf-tile-label {
+  font-size: 14px;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.perf-tile-value {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 4px 0 2px;
+  line-height: 1.1;
+}
+
+.perf-tile-sub {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.perf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.perf-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  min-width: 0;
+}
+
+.perf-card-wide {
+  grid-column: 1 / -1;
+}
+
+.perf-card-head h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.perf-caption {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin: 0 0 12px;
+}
+
+.perf-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.perf-mini-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+
+.perf-table {
+  margin-top: 12px;
+  border-top: 1px solid var(--line-2);
+  padding-top: 8px;
+}
+
+.perf-table summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.perf-table .table-wrap {
+  max-height: 320px;
+  overflow: auto;
+  margin-top: 8px;
+}
+
+.perf-table .data-table.compact th,
+.perf-table .data-table.compact td {
+  font-size: 13px;
+}
+
+.model-table td,
+.model-table th {
+  font-size: 14px;
+  padding: 9px 10px;
+}
+
+.model-table .strong-cell {
+  font-weight: 700;
+}
+
+.perf-outcomes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.perf-outcome {
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  padding: 14px;
+  text-align: center;
+}
+
+.perf-footnote {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+/* Recharts tooltip, shared by all Performance charts */
+.viz-tip {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.14);
+  padding: 8px 10px;
+  font-size: 13px;
+  min-width: 180px;
+}
+
+.viz-tip-title {
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.viz-tip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.viz-key {
+  display: inline-block;
+  width: 10px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.viz-tip-label {
+  color: var(--ink-2);
+  flex: 1;
+}
+
+.viz-tip-value {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1100px) {
+  .perf-outcomes {
+    grid-template-columns: 1fr;
+  }
+}
+
+.model-table th:first-child,
+.model-table td:first-child {
+  width: 40%;
+  white-space: normal;
+}

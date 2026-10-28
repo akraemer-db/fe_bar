@@ -2,6 +2,7 @@ import { mockRequest } from "./mock";
 import type {
   Action,
   GenieResponse,
+  Performance,
   Health,
   Rescore,
   Summary,
@@ -59,6 +60,7 @@ const enc = encodeURIComponent;
 
 export const api = {
   health: () => request<Health>("GET", "/api/health"),
+  performance: () => request<Performance>("GET", "/api/performance"),
   summary: () => request<Summary>("GET", "/api/summary"),
   actions: () => request<Action[]>("GET", "/api/actions"),
   trend: (pumpId: string) => request<Trend>("GET", `/api/pumps/${enc(pumpId)}/trend`),
